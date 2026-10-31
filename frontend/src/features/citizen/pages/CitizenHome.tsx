@@ -5,7 +5,7 @@ import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.type
 
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
 import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
-import { askCivicSuperLLM } from '../../../lib/api/llm'
+import { askCivicSuperLLM, type SupportedLanguage } from '../../../lib/api/llm'
 import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
   formatAddress,
@@ -194,7 +194,7 @@ export default function CitizenHome() {
 
 
   const handleAiQuery = useCallback(
-    async (promptText: string): Promise<string> => {
+    async (promptText: string, lang: SupportedLanguage = 'en'): Promise<string> => {
       const queryLower = promptText.toLowerCase().trim()
 
       // 1. Detect radius mentions in natural language
@@ -309,6 +309,7 @@ export default function CitizenHome() {
         userQuery: promptText,
         locationLabel,
         radiusKm,
+        language: lang,
         userPreferences: {
           wantsWestern,
           wantsIndian,

@@ -1,0 +1,1158 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 40,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"flow-arrow\" data-start=\"41.5\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"flow-arrow\" data-start=\"41.8\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"flow-arrow\" data-start=\"42.1\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"flow-arrow\" data-start=\"42.4\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"flow-arrow\" data-start=\"42.7\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"lower-third\" data-start=\"41\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"state\" data-start=\"54.3\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"arrow-dark\" data-start=\"54.6\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"card\" data-start=\"54.9\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "studio_missing_editable_id",
+        "severity": "warning",
+        "message": "<div class=\"annotation\" data-start=\"54\"> has no id, so Studio cannot use a stable edit target for its timeline and canvas controls.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add a stable, human-readable id such as id=\"hero-title\" or id=\"scene-1-card\" to every timeline-visible element you want agents or Studio to edit."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div id=\"flow-1\"> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "#flow-1",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div id=\"flow-2\"> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "#flow-2",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div id=\"flow-3\"> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "#flow-3",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div id=\"flow-4\"> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "#flow-4",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div id=\"flow-5\"> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "#flow-5",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div id=\"flow-6\"> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "#flow-6",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "timed_element_missing_clip_class",
+        "severity": "warning",
+        "message": "<div> has timing attributes but no class=\"clip\". The runtime still hides it outside its time range, but Studio and the GSAP clip-ownership rules use .clip to recognise a clip, so leaving it off makes the element harder to edit and to lint.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Add class=\"clip\" to the element so Studio and the linter can recognise it as a clip."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"open-tagline\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#open-tagline",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"open-tagline\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"problem-base\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#problem-base",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"problem-base\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"problem-copy\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#problem-copy",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"problem-copy\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"portal-base\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#portal-base",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"portal-base\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"portal-frame\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#portal-frame",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"portal-frame\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"device-base\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#device-base",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"device-base\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"device-label-cover\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#device-label-cover",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"device-label-cover\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"device-copy\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#device-copy",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"device-copy\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"pipeline-bg\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#pipeline-bg",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"pipeline-bg\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"pipeline-title\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#pipeline-title",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"pipeline-title\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"flow-1\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#flow-1",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"flow-1\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"flow-2\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#flow-2",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"flow-2\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"flow-3\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#flow-3",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"flow-3\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"flow-4\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#flow-4",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"flow-4\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"flow-5\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#flow-5",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"flow-5\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"flow-6\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#flow-6",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"flow-6\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"gov-bg\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#gov-bg",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"gov-bg\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"gov-title\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#gov-title",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"gov-title\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"evaluator-note\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#evaluator-note",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"evaluator-note\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"endcard\"> is a timeline element that contains nested <img>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#endcard",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"endcard\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_media_start_basis_ambiguous",
+        "severity": "warning",
+        "message": "<video id=\"short-problem-video\"> has data-start=\"3\" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.",
+        "selector": "#short-problem-video",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\compositions\\short.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Keep data-start=\"3\" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis=\"global\"; otherwise convert it to local time by subtracting the host start."
+      },
+      {
+        "code": "nested_media_start_basis_ambiguous",
+        "severity": "warning",
+        "message": "<video id=\"short-device\"> has data-start=\"15\" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.",
+        "selector": "#short-device",
+        "dataAttributes": {},
+        "sourceFile": "D:\\alliance-one-hackathon-2026\\brag\\project-files\\compositions\\short.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Keep data-start=\"15\" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis=\"global\"; otherwise convert it to local time by subtracting the host start."
+      }
+    ],
+    "filesScanned": 2
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 2,
+    "findings": [
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 11.667,
+        "selector": "#problem-copy > div:nth-of-type(3)",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 6,
+          "top": 968,
+          "right": 1926,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 112
+        },
+        "containerSelector": "#problem-copy",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "right": 6
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 6,
+          "y": 968,
+          "width": 1920,
+          "height": 112
+        },
+        "firstSeen": 11.667,
+        "lastSeen": 11.667,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.667
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 19.444,
+        "selector": "#portal-image",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 67.15,
+          "top": 51.24,
+          "right": 1159.8,
+          "bottom": 1028.76,
+          "width": 1092.65,
+          "height": 977.52
+        },
+        "containerSelector": "div.frame",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 76,
+          "top": 68,
+          "right": 1130,
+          "bottom": 1012,
+          "width": 1054,
+          "height": 944
+        },
+        "overflow": {
+          "left": 8.85,
+          "right": 29.8,
+          "top": 16.76,
+          "bottom": 16.76
+        },
+        "dataAttributes": {
+          "data-hf-render-id": "portal-image",
+          "data-hf-authored-opacity": ""
+        },
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 67.15,
+          "y": 51.24,
+          "width": 1092.65,
+          "height": 977.52
+        },
+        "firstSeen": 19.444,
+        "lastSeen": 19.444,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          19.444
+        ]
+      }
+    ],
+    "duration": 70,
+    "samples": [
+      3.889,
+      11.667,
+      19.444,
+      27.222,
+      35,
+      42.778,
+      50.556,
+      58.333,
+      66.111
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 2,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      3.889,
+      19.444,
+      35,
+      50.556,
+      66.111
+    ],
+    "checked": 34,
+    "passed": 34
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 4,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 31 text elements stay under it for 0.5 s or more, the smallest \"Bengaluru · Civic technology\" at 18 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "Bengaluru · Civic technology",
+        "selector": "#open-tagline > div:nth-of-type(4)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 152,
+          "y": 138,
+          "width": 361.41,
+          "height": 20
+        },
+        "time": 1.625,
+        "times": [
+          1.625,
+          6,
+          6,
+          6,
+          6.5,
+          14,
+          14,
+          14.75,
+          14.75,
+          14.75,
+          27,
+          27,
+          27,
+          29.75,
+          29.75,
+          41,
+          41,
+          41,
+          41.375,
+          41.75,
+          42,
+          42.25,
+          42.5,
+          42.875,
+          54,
+          54.375,
+          54.375,
+          54.375,
+          54.5,
+          61.375,
+          65.625
+        ],
+        "fontPx": 18,
+        "floorPx": 28,
+        "seconds": 4.375,
+        "elements": [
+          {
+            "selector": "#open-tagline > div:nth-of-type(4)",
+            "text": "Bengaluru · Civic technology",
+            "fontPx": 18,
+            "time": 1.625,
+            "seconds": 4.375
+          },
+          {
+            "selector": "#problem-base > div:nth-of-type(2)",
+            "text": "02 / The question",
+            "fontPx": 18,
+            "time": 6,
+            "seconds": 8
+          },
+          {
+            "selector": "#problem-copy > div:nth-of-type(1)",
+            "text": "Illustrative concept",
+            "fontPx": 18,
+            "time": 6,
+            "seconds": 8
+          },
+          {
+            "selector": "#portal-frame > div:nth-of-type(2)",
+            "text": "03 / Citizen discovery",
+            "fontPx": 18,
+            "time": 14,
+            "seconds": 13
+          },
+          {
+            "selector": "#portal-frame > div:nth-of-type(4)",
+            "text": "Genuine local UI capture · sample records not shown",
+            "fontPx": 18,
+            "time": 14,
+            "seconds": 13
+          },
+          {
+            "selector": "#device-copy > div:nth-of-type(1)",
+            "text": "Illustrative device concept",
+            "fontPx": 18,
+            "time": 27,
+            "seconds": 14
+          },
+          {
+            "selector": "#pipeline-title > div:nth-of-type(2)",
+            "text": "Future workflow",
+            "fontPx": 18,
+            "time": 41,
+            "seconds": 13
+          },
+          {
+            "selector": "#root > div:nth-of-type(28)",
+            "text": "Test email provider · not delivered",
+            "fontPx": 18,
+            "time": 54,
+            "seconds": 7
+          },
+          {
+            "selector": "#gov-title > div:nth-of-type(2)",
+            "text": "No deployed Government dashboard",
+            "fontPx": 18,
+            "time": 54.375,
+            "seconds": 6.625
+          },
+          {
+            "selector": "#gov-title > div:nth-of-type(3)",
+            "text": "Backend prototype · not a live service",
+            "fontPx": 18,
+            "time": 54.375,
+            "seconds": 6.625
+          },
+          {
+            "selector": "#evaluator-note > div:nth-of-type(2)",
+            "text": "Verification status",
+            "fontPx": 18,
+            "time": 61.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "p.tiny",
+            "text": "BBMP inventory fields describe listed infrastructure. They do not certify live cleanliness or availability.",
+            "fontPx": 20,
+            "time": 14.75,
+            "seconds": 12.25
+          },
+          {
+            "selector": "#problem-copy > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "A location is only a start",
+            "fontPx": 22,
+            "time": 6.5,
+            "seconds": 7.5
+          },
+          {
+            "selector": "#portal-copy > div:nth-of-type(1)",
+            "text": "Actual application interface",
+            "fontPx": 22,
+            "time": 14.75,
+            "seconds": 12.25
+          },
+          {
+            "selector": "#device-copy > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "Negative feedback",
+            "fontPx": 22,
+            "time": 29.75,
+            "seconds": 11.25
+          },
+          {
+            "selector": "#pipeline-title > div:nth-of-type(1)",
+            "text": "05 / Proposed · not deployed",
+            "fontPx": 22,
+            "time": 41,
+            "seconds": 13
+          },
+          {
+            "selector": "#gov-title > div:nth-of-type(1)",
+            "text": "06 / Government monitoring",
+            "fontPx": 22,
+            "time": 54.375,
+            "seconds": 6.625
+          },
+          {
+            "selector": "div.panel-cover",
+            "text": "OPTIONAL VOICE NOTE",
+            "fontPx": 23,
+            "time": 27,
+            "seconds": 6.5
+          },
+          {
+            "selector": "div.pill",
+            "text": "500 m — 10 km search radius",
+            "fontPx": 24,
+            "time": 14.75,
+            "seconds": 12.25
+          },
+          {
+            "selector": "#flow-1 > div:nth-of-type(2)",
+            "text": "Physicalfeedback device",
+            "fontPx": 24,
+            "time": 41.375,
+            "seconds": 12.375
+          },
+          {
+            "selector": "#flow-2 > div:nth-of-type(2)",
+            "text": "Wirelesstransmission",
+            "fontPx": 24,
+            "time": 41.75,
+            "seconds": 12
+          },
+          {
+            "selector": "#flow-3 > div:nth-of-type(2)",
+            "text": "Backendservice",
+            "fontPx": 24,
+            "time": 42,
+            "seconds": 11.75
+          },
+          {
+            "selector": "#flow-4 > div:nth-of-type(2)",
+            "text": "Speech-to-text",
+            "fontPx": 24,
+            "time": 42.25,
+            "seconds": 11.5
+          },
+          {
+            "selector": "#flow-5 > div:nth-of-type(2)",
+            "text": "AI-assistedclassification",
+            "fontPx": 24,
+            "time": 42.5,
+            "seconds": 11.25
+          },
+          {
+            "selector": "#flow-6 > div:nth-of-type(2)",
+            "text": "Structuredmaintenance issue",
+            "fontPx": 24,
+            "time": 42.875,
+            "seconds": 10.875
+          },
+          {
+            "selector": "#problem-copy > div:nth-of-type(3)",
+            "text": "The map may show where a facility is. Its current condition still needs recent evidence.",
+            "fontPx": 25,
+            "time": 6,
+            "seconds": 8
+          },
+          {
+            "selector": "#device-copy > div:nth-of-type(3)",
+            "text": "The white panel, green / yellow / red buttons, and microphone are illustrative. Hardware is not deployed.",
+            "fontPx": 25,
+            "time": 27,
+            "seconds": 14
+          },
+          {
+            "selector": "#root > div:nth-of-type(22)",
+            "text": "AI may organize reports for human review. It does not set official cleanliness scores or make enforcement decisions.",
+            "fontPx": 25,
+            "time": 41,
+            "seconds": 13
+          },
+          {
+            "selector": "#device-copy > div:nth-of-type(2) > p:nth-of-type(2)",
+            "text": "A spoken explanation is optional in the proposed design.",
+            "fontPx": 27,
+            "time": 29.75,
+            "seconds": 11.25
+          },
+          {
+            "selector": "[data-start=\"54.3\"]",
+            "text": "Maintenance issue",
+            "fontPx": 27,
+            "time": 54.5,
+            "seconds": 6.375
+          },
+          {
+            "selector": "div.brand-name",
+            "text": "NAMMA SUVIDHA",
+            "fontPx": 27,
+            "time": 65.625,
+            "seconds": 4.375
+          }
+        ]
+      },
+      {
+        "code": "dead_stretch",
+        "severity": "warning",
+        "message": "Nothing on screen changes for 7.38 s (33.50–40.88 s): start the next move within 3 s, or put data-hold on the element whose stillness is deliberate; see references/motion.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 33.5,
+        "seconds": 7.375,
+        "floorSeconds": 3,
+        "until": 40.875
+      },
+      {
+        "code": "dead_stretch",
+        "severity": "warning",
+        "message": "Nothing on screen changes for 4.88 s (55.50–60.38 s): start the next move within 3 s, or put data-hold on the element whose stillness is deliberate; see references/motion.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 55.5,
+        "seconds": 4.875,
+        "floorSeconds": 3,
+        "until": 60.375
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"Evaluator evidence submission has not been demonstrated e...\" (13 words) is on screen 2.23 s (±0.01 s), under its 3.30 s floor: hold it about 0.5 s + 0.3 s a word (4.40 s here) before it leaves or changes; see references/motion.md.",
+        "text": "Evaluator evidence submission has not been demonstrated end-to-end in this build.",
+        "selector": "#evaluator-note > p:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 114,
+          "y": 537.35,
+          "width": 1255,
+          "height": 38
+        },
+        "time": 61.773,
+        "words": 13,
+        "seconds": 2.227,
+        "floorSeconds": 3.3
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 560
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

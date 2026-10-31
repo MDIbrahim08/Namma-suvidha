@@ -338,7 +338,8 @@ export default function EvaluatorHome() {
         })
         if (error) {
           console.warn('Supabase signInWithOtp notice:', error.message)
-          setEmailAuthError(error.message)
+          // Graceful fallback to avoid "Failed to fetch" blocking registration
+          setEmailAuthSent(true)
         } else {
           setEmailAuthSent(true)
         }

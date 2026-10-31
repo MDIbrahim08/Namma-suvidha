@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <meta name="description" content="Namma Suvidha product demonstration — verified current build vs illustrative future concepts." />
+    <title>Namma Suvidha — Product Demonstration</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --petrol:#123C3A; --ivory:#F2EEE5; --terra:#D18B55; --charcoal:#29312F; --green:#4F9C70; --yellow:#E8B94E; --red:#D8665B; }
+      * { box-sizing:border-box; }
+      html,body { margin:0; width:1920px; height:1080px; overflow:hidden; background:var(--petrol); color:var(--ivory); font-family:sans-serif; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; background:var(--petrol); }
+      .clip { position:absolute; inset:0; overflow:hidden; }
+      .transition-wash { z-index:90; background:var(--petrol); pointer-events:none; }
+      .dark { background:var(--petrol); color:var(--ivory); }
+      .light { background:var(--ivory); color:var(--charcoal); }
+      .wash { background:rgba(18,60,58,.88); }
+      .eyebrow { font-size:22px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+      .title { margin:0; font-size:78px; line-height:1.04; font-weight:700; letter-spacing:-.03em; }
+      .copy { margin:0; font-size:34px; line-height:1.3; font-weight:400; }
+      .tiny { font-size:20px; line-height:1.35; letter-spacing:.04em; }
+      .rule { width:190px; height:5px; background:var(--terra); transform-origin:left center; }
+      .grain { position:absolute; inset:0; opacity:.10; pointer-events:none; background-image:radial-gradient(rgba(242,238,229,.33) .6px, transparent .6px); background-size:7px 7px; mix-blend-mode:soft-light; }
+      .corner { position:absolute; width:64px; height:64px; border-color:var(--terra); opacity:.9; }
+      .corner.tl { left:48px; top:48px; border-left:3px solid; border-top:3px solid; }
+      .corner.br { right:48px; bottom:48px; border-right:3px solid; border-bottom:3px solid; }
+      .tag { display:inline-flex; align-items:center; gap:12px; padding:12px 18px; border:1px solid rgba(242,238,229,.35); border-radius:999px; background:rgba(18,60,58,.92); color:var(--ivory); font-size:18px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+      .dot { display:inline-block; width:11px; height:11px; border-radius:50%; background:var(--terra); }
+      .scene-index { position:absolute; right:74px; top:58px; font-size:18px; letter-spacing:.18em; text-transform:uppercase; opacity:.72; }
+      .lower-third { position:absolute; left:0; right:0; bottom:0; height:112px; display:flex; align-items:center; padding:0 88px; background:rgba(18,60,58,.96); border-top:2px solid rgba(209,139,85,.7); color:var(--ivory); font-size:25px; letter-spacing:.02em; }
+      .hero-word { font-size:105px; line-height:.98; font-weight:700; letter-spacing:-.045em; }
+      .pill { border:2px solid rgba(18,60,58,.25); color:var(--petrol); background:rgba(242,238,229,.96); border-radius:999px; padding:15px 24px; font-size:24px; font-weight:700; }
+      .card { background:rgba(242,238,229,.97); color:var(--charcoal); border:2px solid rgba(18,60,58,.16); border-radius:24px; box-shadow:0 24px 80px rgba(0,0,0,.20); }
+      .flow-node { position:absolute; width:248px; height:230px; border:2px solid rgba(242,238,229,.38); border-radius:26px; background:rgba(242,238,229,.08); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; text-align:center; padding:22px; }
+      .flow-node.future { border-color:var(--terra); background:rgba(209,139,85,.12); }
+      .flow-icon { width:72px; height:72px; border-radius:50%; display:grid; place-items:center; border:2px solid var(--terra); color:var(--ivory); font-size:34px; font-weight:700; }
+      .flow-label { font-size:24px; line-height:1.2; font-weight:700; }
+      .flow-arrow { position:absolute; top:512px; height:3px; background:var(--terra); transform-origin:left; }
+      .flow-arrow:after { content:""; position:absolute; right:-2px; top:-7px; border-left:14px solid var(--terra); border-top:8px solid transparent; border-bottom:8px solid transparent; }
+      .caption { position:absolute; left:96px; right:96px; bottom:42px; color:var(--ivory); font-size:27px; line-height:1.25; font-weight:500; text-shadow:0 2px 12px rgba(0,0,0,.55); }
+      .portal-img { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; }
+      .frame { position:absolute; left:76px; top:68px; width:1054px; height:944px; overflow:hidden; border-radius:18px; border:5px solid var(--ivory); box-shadow:0 30px 90px rgba(0,0,0,.30); background:#fff; }
+      .seal { position:absolute; right:86px; top:284px; width:500px; height:500px; border:2px solid rgba(242,238,229,.23); border-radius:50%; display:grid; place-items:center; }
+      .seal:before,.seal:after { content:""; position:absolute; border:1px solid rgba(209,139,85,.42); border-radius:50%; inset:32px; }
+      .seal:after { inset:72px; border-color:rgba(242,238,229,.18); }
+      .status-card { position:absolute; left:190px; top:340px; width:720px; padding:40px 46px; }
+      .status-line { display:flex; align-items:center; gap:18px; font-size:27px; padding:15px 0; border-bottom:1px solid rgba(18,60,58,.14); }
+      .status-line:last-child { border-bottom:0; }
+      .status-mark { width:16px; height:16px; border-radius:50%; background:var(--terra); flex:none; }
+      .panel-cover { position:absolute; left:654px; top:868px; width:430px; height:100px; border-radius:6px; background:#F2EEE5; display:flex; align-items:center; justify-content:center; color:#29312F; font-size:23px; font-weight:700; letter-spacing:.12em; }
+      .end-logo { position:absolute; left:310px; top:100px; width:1300px; height:731px; object-fit:contain; }
+      .end-veil { position:absolute; inset:0; background:linear-gradient(180deg,rgba(18,60,58,.03),rgba(18,60,58,.18)); }
+      .endline { position:absolute; left:0; right:0; bottom:105px; text-align:center; color:var(--petrol); font-size:40px; font-weight:700; letter-spacing:.04em; }
+      .brand-name { position:absolute; left:0; right:0; top:46px; text-align:center; color:var(--petrol); font-size:27px; font-weight:700; letter-spacing:.28em; }
+      .human { width:118px; height:118px; border-radius:50%; border:3px solid var(--terra); display:grid; place-items:center; font-size:54px; }
+      .state { min-width:300px; padding:28px 34px; border-radius:18px; border:2px solid rgba(18,60,58,.17); background:var(--ivory); color:var(--charcoal); font-size:27px; font-weight:700; text-align:center; }
+      .arrow-dark { width:92px; height:3px; background:var(--terra); position:relative; }
+      .arrow-dark:after { content:""; position:absolute; right:-1px; top:-7px; border-left:14px solid var(--terra); border-top:8px solid transparent; border-bottom:8px solid transparent; }
+      .annotation { position:absolute; right:100px; bottom:54px; font-size:18px; letter-spacing:.12em; text-transform:uppercase; opacity:.78; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-fps="30" data-duration="70">
+      <!-- 01 / official logo reveal -->
+      <video id="logo-open" class="clip" src="assets/logo-reveal.mp4" data-start="0" data-duration="6" muted playsinline></video>
+      <div id="open-tagline" class="clip light" data-start="1.6" data-duration="4.4">
+        <div class="grain"></div><div class="corner tl"></div><div class="corner br"></div>
+        <div class="tag" style="position:absolute;left:110px;top:125px"><span class="dot"></span> Bengaluru · Civic technology</div>
+        <div id="open-line" class="copy" style="position:absolute;left:110px;bottom:132px;width:780px;color:#123C3A;font-size:44px;font-weight:700"><span style="display:block">Find public toilets</span><span style="display:block">you can actually trust.</span></div>
+        <div class="rule" style="position:absolute;left:110px;bottom:95px"></div>
+      </div>
+
+      <!-- 02 / real environment, explicitly illustrative -->
+      <div id="problem-base" class="clip light" data-start="6" data-duration="8"><div class="grain"></div><div class="scene-index">02 / The question</div></div>
+      <video id="problem-film" class="clip" src="assets/flow-feedback.mp4" data-start="6" data-duration="3.2" data-media-start="0.4" muted playsinline style="object-fit:cover"></video>
+      <div id="problem-copy" class="clip" data-start="6" data-duration="8">
+        <div class="tag" style="position:absolute;left:78px;top:72px"><span class="dot"></span> Illustrative concept</div>
+        <div class="wash" style="position:absolute;left:74px;bottom:152px;width:900px;padding:42px 48px;border-radius:18px;border:1px solid rgba(242,238,229,.3)">
+          <div class="eyebrow" style="color:#D18B55;margin-bottom:16px">A location is only a start</div>
+          <p class="title" style="font-size:62px"><span style="display:block">Is it usable</span><span style="display:block">today?</span></p>
+        </div>
+        <div class="lower-third">The map may show where a facility is. Its current condition still needs recent evidence.</div>
+      </div>
+
+      <!-- 03 / genuine current Citizen Portal capture; no fabricated result markers -->
+      <div id="portal-base" class="clip dark" data-start="14" data-duration="13"><div class="grain"></div></div>
+      <div id="portal-frame" class="clip" data-start="14" data-duration="13">
+        <div class="frame"><img id="portal-image" class="portal-img" src="assets/citizen-ui-detail.png" alt="Actual Namma Suvidha Citizen Portal capture" /></div>
+        <div class="scene-index">03 / Citizen discovery</div>
+        <div id="portal-copy" style="position:absolute;left:1210px;top:200px;width:630px">
+          <div class="eyebrow" style="color:#D18B55;margin-bottom:24px">Actual application interface</div>
+          <p class="title" style="font-size:68px;margin-bottom:26px"><span style="display:block">Find the place.</span><span style="display:block">Check the details.</span></p>
+          <div class="rule" style="margin:0 0 28px"></div>
+          <p class="copy" style="font-size:29px;margin-bottom:32px">Map view · radius controls · municipal infrastructure records</p>
+          <div class="pill">500 m — 10 km search radius</div>
+          <p class="tiny" style="margin-top:30px;color:#F2EEE5;opacity:.84">BBMP inventory fields describe listed infrastructure. They do not certify live cleanliness or availability.</p>
+        </div>
+        <div class="tag" style="position:absolute;left:84px;bottom:25px"><span class="dot"></span> Genuine local UI capture · sample records not shown</div>
+      </div>
+
+      <!-- 04 / same Flow source, same person/room/device; malformed generated subtitle masked -->
+      <div id="device-base" class="clip dark" data-start="27" data-duration="14"><div class="grain"></div></div>
+      <video id="device-film" class="clip" src="assets/flow-feedback.mp4" data-start="27" data-duration="6.4" data-media-start="3.4" muted playsinline style="object-fit:cover"></video>
+      <div id="device-label-cover" class="clip" data-start="27" data-duration="6.4"><div class="panel-cover">OPTIONAL VOICE NOTE</div></div>
+      <div id="device-copy" class="clip" data-start="27" data-duration="14">
+        <div class="tag" style="position:absolute;left:76px;top:58px"><span class="dot"></span> Illustrative device concept</div>
+        <div class="wash" style="position:absolute;right:74px;top:220px;width:560px;padding:40px;border-radius:18px;border:1px solid rgba(242,238,229,.35)">
+          <div class="eyebrow" style="color:#D18B55;margin-bottom:20px">Negative feedback</div>
+          <p class="title" style="font-size:58px;margin-bottom:20px">NO → voice<br>can follow</p>
+          <p class="copy" style="font-size:27px">A spoken explanation is optional in the proposed design.</p>
+        </div>
+        <div class="lower-third">The white panel, green / yellow / red buttons, and microphone are illustrative. Hardware is not deployed.</div>
+      </div>
+
+      <!-- 05 / future voice pipeline, clearly marked -->
+      <div id="pipeline-bg" class="clip dark" data-start="41" data-duration="13"><div class="grain"></div><div class="seal" style="right:710px;top:288px"></div></div>
+      <div id="pipeline-title" class="clip dark" data-start="41" data-duration="13">
+        <div class="eyebrow" style="position:absolute;left:90px;top:68px;color:#D18B55">05 / Proposed · not deployed</div>
+        <p class="title" style="position:absolute;left:90px;top:120px;font-size:66px">From a report to a structured issue.</p>
+        <div class="tag" style="position:absolute;right:92px;top:72px"><span class="dot"></span> Future workflow</div>
+      </div>
+      <div id="flow-1" class="flow-node" data-start="41.2" data-duration="12.5" style="left:70px;top:395px"><div class="flow-icon">01</div><div class="flow-label">Physical<br>feedback device</div></div>
+      <div id="flow-2" class="flow-node" data-start="41.5" data-duration="12.2" style="left:380px;top:395px"><div class="flow-icon">02</div><div class="flow-label">Wireless<br>transmission</div></div>
+      <div id="flow-3" class="flow-node" data-start="41.8" data-duration="11.9" style="left:690px;top:395px"><div class="flow-icon">03</div><div class="flow-label">Backend<br>service</div></div>
+      <div id="flow-4" class="flow-node future" data-start="42.1" data-duration="11.6" style="left:1000px;top:395px"><div class="flow-icon">04</div><div class="flow-label">Speech-to-text</div></div>
+      <div id="flow-5" class="flow-node future" data-start="42.4" data-duration="11.3" style="left:1310px;top:395px"><div class="flow-icon">05</div><div class="flow-label">AI-assisted<br>classification</div></div>
+      <div id="flow-6" class="flow-node" data-start="42.7" data-duration="11" style="left:1620px;top:395px"><div class="flow-icon">06</div><div class="flow-label">Structured<br>maintenance issue</div></div>
+      <div class="flow-arrow" style="left:316px;width:52px" data-start="41.5" data-duration="12"></div><div class="flow-arrow" style="left:626px;width:52px" data-start="41.8" data-duration="11.7"></div><div class="flow-arrow" style="left:936px;width:52px" data-start="42.1" data-duration="11.4"></div><div class="flow-arrow" style="left:1246px;width:52px" data-start="42.4" data-duration="11.1"></div><div class="flow-arrow" style="left:1556px;width:52px" data-start="42.7" data-duration="10.8"></div>
+      <div class="lower-third" data-start="41" data-duration="13">AI may organize reports for human review. It does not set official cleanliness scores or make enforcement decisions.</div>
+
+      <!-- 06 / implemented backend foundations; no dashboard implied -->
+      <div id="gov-bg" class="clip light" data-start="54" data-duration="7"><div class="grain"></div></div>
+      <div id="gov-title" class="clip light" data-start="54" data-duration="7">
+        <div class="eyebrow" style="position:absolute;left:92px;top:72px;color:#123C3A">06 / Government monitoring</div>
+        <p class="title" style="position:absolute;left:92px;top:132px;width:820px;font-size:70px"><span style="display:block">Human review</span><span style="display:block">stays in the loop.</span></p>
+        <p class="copy" style="position:absolute;left:95px;top:340px;width:690px;font-size:29px">The current build includes issue lifecycle APIs and audit history in a local, in-memory demo.</p>
+        <div class="tag" style="position:absolute;left:95px;bottom:140px;background:#123C3A"><span class="dot"></span> No deployed Government dashboard</div>
+        <div class="scene-index" style="color:#123C3A">Backend prototype · not a live service</div>
+      </div>
+      <div class="state" data-start="54.3" data-duration="6.5" style="position:absolute;left:910px;top:458px">Maintenance issue</div>
+      <div class="arrow-dark" data-start="54.6" data-duration="6.2" style="position:absolute;left:1225px;top:514px"></div>
+      <div class="card" data-start="54.9" data-duration="5.9" style="position:absolute;left:1340px;top:365px;width:430px;height:300px;padding:32px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px">
+        <div class="human">✓</div><div style="font-size:28px;font-weight:700;text-align:center">Authorized officer<br>reviews and acts</div>
+      </div>
+      <div class="annotation" data-start="54" data-duration="7" style="color:#29312F">Test email provider · not delivered</div>
+
+      <!-- 07 / evaluator status transparency -->
+      <div id="evaluator-note" class="clip dark" data-start="61" data-duration="3">
+        <div class="grain"></div><div class="tag" style="position:absolute;left:110px;top:90px"><span class="dot"></span> Verification status</div>
+        <p class="title" style="position:absolute;left:110px;top:270px;font-size:68px;max-width:1500px">Evaluator inspections are not shown as verified.</p>
+        <p class="copy" style="position:absolute;left:114px;top:530px;width:1300px;font-size:34px">Evaluator evidence submission has not been demonstrated end-to-end in this build.</p>
+        <div class="rule" style="position:absolute;left:114px;bottom:190px"></div>
+      </div>
+
+      <!-- 08 / official final mark -->
+      <div id="endcard" class="clip light" data-start="64" data-duration="6">
+        <img class="end-logo" src="assets/logo-endcard.png" alt="Official Namma Suvidha logo" /><div class="end-veil"></div>
+        <div class="endline">One city. Better facilities. More dignity.</div>
+        <div class="brand-name">NAMMA SUVIDHA</div>
+      </div>
+
+
+      <div id="transition-1" class="clip transition-wash" style="opacity:0" data-start="5.82" data-duration="0.36"></div>
+      <div id="transition-2" class="clip transition-wash" style="opacity:0" data-start="13.82" data-duration="0.36"></div>
+      <div id="transition-3" class="clip transition-wash" style="opacity:0" data-start="26.82" data-duration="0.36"></div>
+      <div id="transition-4" class="clip transition-wash" style="opacity:0" data-start="40.82" data-duration="0.36"></div>
+      <div id="transition-5" class="clip transition-wash" style="opacity:0" data-start="53.82" data-duration="0.36"></div>
+      <div id="transition-6" class="clip transition-wash" style="opacity:0" data-start="60.82" data-duration="0.36"></div>
+      <div id="transition-7" class="clip transition-wash" style="opacity:0" data-start="63.82" data-duration="0.36"></div>
+      <audio id="main-mix" src="assets/mix-long.wav" data-start="0" data-duration="70" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#open-tagline", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.4);
+      tl.fromTo("#open-line", { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75, ease: "power3.out" }, 2.0);
+      tl.fromTo("#problem-copy .wash", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.65, ease: "power3.out" }, 6.3);
+      tl.fromTo("#portal-image", { scale: 1.08, x: 18 }, { scale: 1, x: 0, duration: 13, ease: "none" }, 14);
+      tl.fromTo("#problem-copy .lower-third", { x: 0 }, { x: 8, duration: 7, yoyo: true, repeat: 1, ease: "sine.inOut" }, 7);
+      tl.fromTo("#device-film", { scale: 1.02 }, { scale: 1.07, duration: 6.4, ease: "none" }, 27);
+      tl.fromTo("#pipeline-bg .seal", { scale: 0.94, opacity: 0.55 }, { scale: 1.04, opacity: 0.9, duration: 12, ease: "none" }, 41);
+      tl.fromTo("#gov-bg .grain", { opacity: 0.05 }, { opacity: 0.2, duration: 6.5, yoyo: true, repeat: 1, ease: "sine.inOut" }, 54);
+      tl.fromTo("#portal-copy", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 14.5);
+      tl.fromTo("#device-copy .wash", { x: 44, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 29.5);
+      ["#flow-1", "#flow-2", "#flow-3", "#flow-4", "#flow-5", "#flow-6"].forEach((s, i) => tl.fromTo(s, { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 41.25 + i * 0.28));
+      ["#gov-title", ".state", ".arrow-dark", ".card"].forEach((s, i) => tl.fromTo(s, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 54.15 + i * 0.25));
+      tl.fromTo("#evaluator-note .tag", { x: -25, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 61.2);
+      tl.fromTo("#evaluator-note p", { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, stagger: 0.2, ease: "power3.out" }, 61.45);
+      tl.fromTo("#endcard .endline", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 65.0);
+      tl.fromTo("#endcard .brand-name", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 65.45);
+      [6, 14, 27, 41, 54, 61, 64].forEach((time, i) => { const sel = '#transition-' + (i + 1); tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power1.in' }, time - 0.18); tl.to(sel, { opacity: 0, duration: 0.18, ease: 'power1.out' }, time); });
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

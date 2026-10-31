@@ -1,0 +1,11 @@
+file_name,file_type,duration,resolution,aspect_ratio,audio_availability,recommended_use
+logo-reveal.mp4,MP4 video,8.000 s,1920x1080,16:9,"AAC stereo 48 kHz","Official opening reveal; mute source audio and use original score"
+namma-suvidha-logo-animation.html,HTML animation,n/a,n/a,n/a,"No embedded media audio","Brand reference only"
+citizen-portal-1920.png,PNG screenshot,still,1920x1080,16:9,"None","Genuine local Citizen Portal interface capture"
+citizen-portal-landing.png,PNG screenshot,still,1264x650,1.94:1,"None","Initial interface reference; lower map is cropped"
+google-flow-feedback-concept.mp4,MP4 video,9.963 s,1920x1080,16:9,"AAC stereo 48 kHz","Illustrative only; short clips around restroom entry and feedback panel; mute; generated panel subtitle is masked"
+google-flow-voice-pipeline-concept.mp4,MP4 video,9.963 s,1920x1080,16:9,"AAC stereo 48 kHz","Reference only; generated labels and interface graphics are malformed, exclude from final cut"
+Screen Recording 2026-10-24 150056.mp4,MP4 screen recording,63.488 s,1330x624,2.13:1,"AAC stereo 48 kHz","Exclude; preview shows unrelated live operational telemetry dashboard"
+WhatsApp Video 2026-10-31 at 1.47.49 AM.mp4,MP4 video,8.000 s,1920x1080,16:9,"AAC stereo 48 kHz","Duplicate of official logo reveal by file size and visual inspection; do not make a second copy"
+Standard recording 4.mp3,MP3 audio,816.993 s,Audio only,n/a,"MP3 stereo 48 kHz","Unknown 13:36:993 recording; not auditioned or used"
+1625131068617.jpg,JPEG image,still,701x1024,0.685:1,"None","Unrelated decorative tower image; exclude"

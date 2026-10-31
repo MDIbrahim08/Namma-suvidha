@@ -1,3 +1,5 @@
+export type SupportedLanguage = 'en' | 'kn' | 'hi'
+
 export interface ToiletFacilityContext {
   id?: number | string
   name: string
@@ -16,6 +18,7 @@ export interface CivicAiQueryContext {
   userQuery: string
   locationLabel: string
   radiusKm: string
+  language?: SupportedLanguage
   userPreferences: {
     wantsWestern?: boolean
     wantsIndian?: boolean
@@ -28,12 +31,21 @@ export interface CivicAiQueryContext {
   facilities: ToiletFacilityContext[]
 }
 
+const LANGUAGE_INSTRUCTIONS: Record<SupportedLanguage, string> = {
+  en: 'Respond in clear, polite English.',
+  kn: 'Respond fluently in Kannada (ಕನ್ನಡ ಲಿಪಿಯಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಉತ್ತರಿಸಿ). Provide toilet names and directions in helpful Kannada.',
+  hi: 'Respond fluently in conversational Hindi (हिंदी में उत्तर दें). Provide toilet details and directions clearly in Hindi.',
+}
+
 /**
- * Supercharged Civic AI Chatbot Engine
+ * Supercharged Civic AI Chatbot Engine with Multi-Language Support (English, Kannada, Hindi)
  * Supports deep preference reasoning: Western vs Indian / Squat, Wheelchair / Accessibility,
  * Baby Changing, Free/Paid, Geolocation Radius, and Real BBMP Facilities.
  */
 export async function askCivicSuperLLM(ctx: CivicAiQueryContext): Promise<string> {
+  const lang = ctx.language || 'en'
+  const langInstruction = LANGUAGE_INSTRUCTIONS[lang] || LANGUAGE_INSTRUCTIONS.en
+
   // 1. Feature Filter Matching
   const matched = ctx.facilities.filter((f) => {
     if (ctx.userPreferences.wantsWheelchair && f.wheelchair !== 'yes') return false
@@ -57,7 +69,8 @@ Rules:
 1. Address the citizen's specific requirements (e.g., Western vs Indian toilets, wheelchair/disabled access, baby care, free facilities, or specific Bengaluru locality).
 2. Recommend the best matching facility immediately, stating its exact name, distance, address, and amenities.
 3. Be reassuring, polite, and direct (2 to 4 sentences maximum).
-4. Never make up fake coordinates or non-existent cities. Focus on Bengaluru.`
+4. ${langInstruction}
+5. Never make up fake coordinates or non-existent cities. Focus on Bengaluru.`
 
   // Try OpenRouter (Gemini 2.0 / Nemotron)
   const openRouterKey = (import.meta as any).env?.VITE_OPENROUTER_API_KEY || ''
@@ -75,10 +88,10 @@ Rules:
             { role: 'system', content: systemPrompt },
             {
               role: 'user',
-              content: `Citizen Request: "${ctx.userQuery}"\nDetected Area: ${ctx.locationLabel} (${ctx.radiusKm} km radius)\nPreferences: ${JSON.stringify(ctx.userPreferences)}\nVerified Live Facilities:\n${facilitiesSummary}`,
+              content: `Citizen Request: "${ctx.userQuery}"\nLanguage: ${lang}\nDetected Area: ${ctx.locationLabel} (${ctx.radiusKm} km radius)\nPreferences: ${JSON.stringify(ctx.userPreferences)}\nVerified Live Facilities:\n${facilitiesSummary}`,
             },
           ],
-          max_tokens: 220,
+          max_tokens: 250,
           temperature: 0.25,
         }),
       })
@@ -108,10 +121,10 @@ Rules:
             { role: 'system', content: systemPrompt },
             {
               role: 'user',
-              content: `Citizen Request: "${ctx.userQuery}"\nArea: ${ctx.locationLabel}\nLive Facilities:\n${facilitiesSummary}`,
+              content: `Citizen Request: "${ctx.userQuery}"\nLanguage: ${lang}\nArea: ${ctx.locationLabel}\nLive Facilities:\n${facilitiesSummary}`,
             },
           ],
-          max_tokens: 180,
+          max_tokens: 220,
           temperature: 0.25,
         }),
       })
@@ -125,9 +138,25 @@ Rules:
     }
   }
 
-  // Guaranteed Truth-Preserving Algorithmic Response
+  // Guaranteed Truth-Preserving Algorithmic Response with Multi-Language Support
   if (!best) {
+    if (lang === 'kn') {
+      return `${ctx.locationLabel} ಹತ್ತಿರ ${ctx.radiusKm} ಕಿಮೀ ವ್ಯಾಪ್ತಿಯಲ್ಲಿ ಯಾವುದೇ ಶೌಚಾಲಯ ತಕ್ಷಣ ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ. ನಕ್ಷೆಯಲ್ಲಿ ಹತ್ತಿರದ ಬಿಬಿಎಂಪಿ ಸೌಲಭ್ಯಗಳನ್ನು ತೋರಿಸಲು ತ್ರಿಜ್ಯವನ್ನು ವಿಸ್ತರಿಸಲಾಗಿದೆ.`
+    }
+    if (lang === 'hi') {
+      return `${ctx.locationLabel} के पास ${ctx.radiusKm} किमी के दायरे में कोई शौचालय तुरंत उपलब्ध नहीं मिला। आपके लिए निकटतम बीबीएमपी सुविधाओं को मानचित्र पर विस्तारित किया गया है।`
+    }
     return `Searched near ${ctx.locationLabel} within ${ctx.radiusKm} km across verified BBMP records. No washroom immediately matches all requested constraints. We have expanded your live map radius to display the nearest accessible civic facilities.`
+  }
+
+  const feeLabel = best.fee ? `Fee: ${best.fee}` : 'Free public access'
+
+  if (lang === 'kn') {
+    return `${ctx.locationLabel} ಹತ್ತಿರ ನಿಮಗೆ ಅತ್ಯುತ್ತಮ ಬಿಬಿಎಂಪಿ ಶೌಚಾಲಯ: "${best.name}" (${best.distance} ದೂರದಲ್ಲಿದೆ, ಸ್ಥಳ: ${best.address}). ಸೌಲಭ್ಯಗಳು: ${best.wheelchair === 'yes' ? 'ಗಾಲಿಕುರ್ಚಿ ಸ್ನೇಹಿ (Wheelchair Accessible)' : 'ಸಾಮಾನ್ಯ ಪ್ರವೇಶ'}, ಶುಲ್ಕ: ${best.fee || 'ಉಚಿತ'}. ಲೈವ್ ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಮಾರ್ಗ ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ.`
+  }
+
+  if (lang === 'hi') {
+    return `${ctx.locationLabel} के पास आपके लिए सत्यापित बीबीएमपी शौचालय: "${best.name}" (${best.distance} की दूरी पर, पता: ${best.address})। सुविधाएं: ${best.wheelchair === 'yes' ? 'व्हीलचेयर सुलभ' : 'सामान्य'}, शुल्क: ${best.fee || 'मुफ़्त'}। नीचे मानचित्र पर सीधा रास्ता जोड़ दिया गया है।`
   }
 
   const prefTags: string[] = []
@@ -138,7 +167,6 @@ Rules:
   if (ctx.userPreferences.wantsFree) prefTags.push('free admission')
 
   const prefStr = prefTags.length > 0 ? ` with ${prefTags.join(', ')}` : ''
-  const feeLabel = best.fee ? `Fee: ${best.fee}` : 'Free public access'
 
   return `Here is your best verified facility${prefStr} near ${ctx.locationLabel}: "${best.name}" (${best.distance} away at ${best.address}). Amenities verified: ${best.wheelchair === 'yes' ? 'Accessible' : 'Standard access'}, ${feeLabel}. Live interactive navigation route has been mapped below.`
 }

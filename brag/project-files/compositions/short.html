@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920,height=1080" />
+    <title>Namma Suvidha — 30 second demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root{--petrol:#123C3A;--ivory:#F2EEE5;--terra:#D18B55;--charcoal:#29312F}
+      *{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--petrol);font-family:sans-serif;color:var(--ivory)}
+      #root{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--petrol)}.clip{position:absolute;inset:0;overflow:hidden}.transition-wash{z-index:90;background:var(--petrol);pointer-events:none}.eyebrow{font-size:22px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.title{margin:0;font-size:76px;line-height:1.05;font-weight:700;letter-spacing:-.03em}.copy{font-size:32px;line-height:1.3}.tag{position:absolute;left:74px;top:64px;padding:12px 20px;border-radius:999px;background:rgba(18,60,58,.94);border:1px solid rgba(242,238,229,.34);font-size:19px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.dot{display:inline-block;width:10px;height:10px;background:var(--terra);border-radius:50%;margin-right:12px}.frame{position:absolute;left:70px;top:56px;width:1050px;height:968px;border:5px solid var(--ivory);border-radius:18px;overflow:hidden;box-shadow:0 26px 80px rgba(0,0,0,.28)}.ui{width:100%;height:100%;object-fit:cover}.lower{position:absolute;left:0;right:0;bottom:0;height:104px;background:rgba(18,60,58,.96);border-top:2px solid rgba(209,139,85,.65);display:flex;align-items:center;padding:0 86px;font-size:24px}.panel-cover{position:absolute;left:654px;top:868px;width:430px;height:100px;border-radius:6px;background:#F2EEE5;color:#29312F;display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:700;letter-spacing:.12em}.node{position:absolute;top:455px;width:288px;padding:30px 22px;border:2px solid rgba(242,238,229,.45);border-radius:20px;text-align:center;font-size:25px;font-weight:700;background:rgba(242,238,229,.08)}.end-logo{position:absolute;left:310px;top:100px;width:1300px;height:731px;object-fit:contain}.endline{position:absolute;left:0;right:0;bottom:105px;text-align:center;color:var(--petrol);font-size:40px;font-weight:700}.brand{position:absolute;left:0;right:0;top:46px;text-align:center;color:var(--petrol);font-size:27px;font-weight:700;letter-spacing:.28em}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="short" data-width="1920" data-height="1080" data-fps="30" data-duration="30">
+      <video id="short-logo" class="clip" src="../assets/logo-reveal.mp4" data-start="0" data-duration="3.2" muted playsinline></video>
+      <div id="short-brand" class="clip" data-start=".7" data-duration="2.3" style="background:rgba(242,238,229,.18)"><p id="short-tag" class="copy" style="position:absolute;left:104px;bottom:100px;width:780px;font-weight:700;font-size:42px;color:#123C3A"><span style="display:block">Find public toilets</span><span style="display:block">you can actually trust.</span></p></div>
+
+      <div id="short-problem-bg" class="clip" data-start="3" data-duration="3" style="background:#F2EEE5"></div>
+      <video id="short-problem-video" class="clip" src="../assets/flow-feedback.mp4" data-start="3" data-duration="2.8" data-media-start=".4" muted playsinline></video>
+      <div id="short-problem-copy" class="clip" data-start="3" data-duration="3"><div class="tag"><span class="dot"></span>Illustrative concept</div><div style="position:absolute;left:76px;bottom:136px;padding:32px 38px;background:rgba(18,60,58,.9);border-radius:16px"><p class="title" style="font-size:54px"><span style="display:block">A pin can’t tell</span><span style="display:block">you if it’s usable.</span></p></div></div>
+
+      <div id="short-app-bg" class="clip" data-start="6" data-duration="9" style="background:#123C3A"></div>
+      <div id="short-app" class="clip" data-start="6" data-duration="9"><div class="frame"><img id="short-ui" class="ui" src="../assets/citizen-ui-detail.png" alt="Actual Namma Suvidha Citizen Portal capture" /></div><div style="position:absolute;left:1200px;top:210px;width:620px"><div class="eyebrow" style="color:#D18B55;margin-bottom:22px">Actual application interface</div><p class="title" style="font-size:66px;margin-bottom:26px"><span style="display:block">Find the place.</span><span style="display:block">Review the details.</span></p><p class="copy">Map view · 500 m–10 km search radius · municipal infrastructure records</p><p style="font-size:22px;line-height:1.35;margin-top:28px;opacity:.88">Inventory fields do not certify live cleanliness or availability.</p></div><div class="tag" style="top:auto;bottom:28px"><span class="dot"></span>Genuine UI capture · no sample result markers</div></div>
+
+      <div id="short-device-bg" class="clip" data-start="15" data-duration="5" style="background:#123C3A"></div>
+      <video id="short-device" class="clip" src="../assets/flow-feedback.mp4" data-start="15" data-duration="3.1" data-media-start="3.4" muted playsinline></video>
+      <div id="short-device-cover" class="clip" data-start="15" data-duration="3.1"><div class="panel-cover">OPTIONAL VOICE NOTE</div></div>
+      <div id="short-device-label" class="clip" data-start="15" data-duration="5"><div class="tag"><span class="dot"></span>Illustrative · not deployed</div><div class="lower">A negative response can be followed by optional voice feedback in the proposed design.</div></div>
+
+      <div id="short-pipeline" class="clip" data-start="20" data-duration="4" style="background:#123C3A"><div class="eyebrow" style="position:absolute;left:84px;top:92px;color:#D18B55">Proposed workflow · not deployed</div><p class="title" style="position:absolute;left:84px;top:155px;font-size:62px">Voice → transcript → issue for review</p><div class="node" style="left:180px">Feedback device</div><div class="node" style="left:590px;border-color:#D18B55">Speech-to-text</div><div class="node" style="left:1000px;border-color:#D18B55">AI-assisted classification</div><div class="node" style="left:1410px">Human review</div><div class="lower">AI does not set official cleanliness scores or enforcement decisions.</div></div>
+
+      <div id="short-gov" class="clip" data-start="24" data-duration="3" style="background:#F2EEE5;color:#29312F"><div class="eyebrow" style="position:absolute;left:90px;top:70px;color:#123C3A">Government monitoring</div><p class="title" style="position:absolute;left:90px;top:150px;font-size:62px">Backend APIs in a local demo.</p><p class="copy" style="position:absolute;left:94px;top:290px;width:1380px">Authorized human review remains part of the implemented issue lifecycle. There is no deployed dashboard.</p><div class="tag" style="top:auto;bottom:48px"><span class="dot"></span>In-memory prototype · test email not delivered</div></div>
+
+      <div id="short-end" class="clip" data-start="27" data-duration="3"><img class="end-logo" src="../assets/logo-endcard.png" alt="Official Namma Suvidha logo" /><div class="endline">One city. Better facilities. More dignity.</div><div class="brand">NAMMA SUVIDHA</div></div>
+
+      <div id="short-transition-1" class="clip transition-wash" style="opacity:0" data-start="2.82" data-duration="0.36"></div>
+      <div id="short-transition-2" class="clip transition-wash" style="opacity:0" data-start="5.82" data-duration="0.36"></div>
+      <div id="short-transition-3" class="clip transition-wash" style="opacity:0" data-start="14.82" data-duration="0.36"></div>
+      <div id="short-transition-4" class="clip transition-wash" style="opacity:0" data-start="19.82" data-duration="0.36"></div>
+      <div id="short-transition-5" class="clip transition-wash" style="opacity:0" data-start="23.82" data-duration="0.36"></div>
+      <div id="short-transition-6" class="clip transition-wash" style="opacity:0" data-start="26.82" data-duration="0.36"></div>
+      <audio id="short-mix" src="../assets/mix-short.wav" data-start="0" data-duration="30" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {}; const tl = gsap.timeline({paused:true});
+      tl.fromTo("#short-brand",{opacity:0},{opacity:1,duration:.35,ease:"power2.out"},.55);
+      tl.fromTo("#short-tag",{y:24,opacity:0},{y:0,opacity:1,duration:.5,ease:"power3.out"},1.0);
+      tl.fromTo("#short-problem-copy > div:last-child",{x:-24,opacity:0},{x:0,opacity:1,duration:.45,ease:"power3.out"},3.2);
+      tl.fromTo("#short-ui",{scale:1.045},{scale:1,duration:9,ease:"none"},6);
+      tl.fromTo("#short-app > div:nth-child(2)",{x:24,opacity:0},{x:0,opacity:1,duration:.55,ease:"power3.out"},6.3);
+      tl.fromTo("#short-pipeline .node",{y:18,opacity:0},{y:0,opacity:1,duration:.4,stagger:.14,ease:"power3.out"},20.4);
+      tl.fromTo("#short-gov p",{y:18,opacity:0},{y:0,opacity:1,duration:.45,stagger:.15,ease:"power3.out"},24.2);
+      tl.fromTo("#short-end .endline",{y:12,opacity:0},{y:0,opacity:1,duration:.45,ease:"power2.out"},27.35);
+      tl.fromTo("#short-end .brand",{opacity:0},{opacity:1,duration:.4,ease:"power2.out"},27.65);
+      [3, 6, 15, 20, 24, 27].forEach((time, i) => { const sel = '#short-transition-' + (i + 1); tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power1.in' }, time - 0.18); tl.to(sel, { opacity: 0, duration: 0.18, ease: 'power1.out' }, time); });
+      window.__timelines.short=tl;
+    </script>
+  </body>
+</html>

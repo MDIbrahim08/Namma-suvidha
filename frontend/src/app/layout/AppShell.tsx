@@ -7,9 +7,9 @@ import LiquidGlassNavbar from '../../components/ui/liquid-glass-navbar'
 import BackgroundGlow from '../../components/ui/background-components'
 
 const navItems = [
-  { to: '/', label: 'Citizen', icon: 'explore' },
-  { to: '/evaluator', label: 'Volunteer', icon: 'volunteer_activism' },
-  { to: '/admin', label: 'Admin', icon: 'admin_panel_settings' },
+  { to: '/', label: 'Citizen', icon: 'location_city' },
+  { to: '/evaluator', label: 'Volunteer', icon: 'badge' },
+  { to: '/admin', label: 'Admin', icon: 'shield_person' },
 ]
 
 export default function AppShell() {
@@ -26,23 +26,26 @@ export default function AppShell() {
   return (
     <BackgroundGlow className="text-slate-900">
       {showSplash && <LogoSplash onFinish={handleSplashFinish} />}
-      <header className="border-b border-slate-200/80 bg-white/75 backdrop-blur-md sticky top-0 z-30">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-2.5">
+      <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-md sticky top-0 z-30">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 sm:gap-4 px-3 sm:px-4 py-2 sm:py-2.5">
           <Link
             to="/"
-            className="flex items-center gap-2.5 hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 sm:gap-3 hover:opacity-90 transition-opacity shrink-0"
           >
             <img
               src="/logo.png"
               alt="Namma Suvidha Logo"
-              className="w-9 h-9 object-contain rounded-full shadow-xs"
+              className="w-12 h-12 sm:w-14 sm:h-14 object-contain rounded-xl shadow-xs bg-white p-0.5 border border-slate-100"
             />
-            <span className="text-lg font-bold tracking-tight text-[#123C3A] m-0 p-0">{env.appName}</span>
+            <div className="flex flex-col">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-[#123C3A] leading-tight m-0 p-0">{env.appName}</span>
+              <span className="text-[10px] sm:text-xs font-semibold text-emerald-700 tracking-wider uppercase hidden sm:inline">Bengaluru Civic</span>
+            </div>
           </Link>
           <LiquidGlassNavbar items={navItems} />
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-3 sm:px-4 py-6 sm:py-8">
         <Outlet />
       </main>
       <footer className="border-t border-slate-200/70 bg-white/70 backdrop-blur-sm py-4 px-4 text-xs text-slate-500">
