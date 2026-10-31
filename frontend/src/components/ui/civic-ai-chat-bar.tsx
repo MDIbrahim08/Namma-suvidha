@@ -7,9 +7,9 @@ export interface CivicAiChatBarProps {
 }
 
 const LANGUAGES: { code: SupportedLanguage; label: string; placeholder: string; speechLang: string }[] = [
-  { code: 'en', label: 'English', placeholder: "Ask Namma AI: 'Find accessible toilets near Indiranagar' or 'Western toilets'…", speechLang: 'en-IN' },
-  { code: 'kn', label: 'ಕನ್ನಡ', placeholder: "ನಮ್ಮ AI ಗೆ ಕೇಳಿ: 'ಇಂದಿರಾನಗರ ಹತ್ತಿರ ಶೌಚಾಲಯ ಹುಡುಕಿ' ಅಥವಾ 'ಗಾಲಿಕುರ್ಚಿ ಸ್ನೇಹಿ'…", speechLang: 'kn-IN' },
-  { code: 'hi', label: 'हिंदी', placeholder: "नम्मा एआई से पूछें: 'इंदिरानगर के पास शौचालय' या 'वेस्टर्न टॉयलेट'…", speechLang: 'hi-IN' },
+  { code: 'en', label: 'English', placeholder: "Ask Namma AI: 'Find accessible toilets' or 'Western toilets'…", speechLang: 'en-IN' },
+  { code: 'kn', label: 'ಕನ್ನಡ', placeholder: "ನಮ್ಮ AI ಗೆ ಕೇಳಿ: 'ಇಂದಿರಾನಗರ ಹತ್ತಿರ ಶೌಚಾಲಯ ಹುಡುಕಿ'…", speechLang: 'kn-IN' },
+  { code: 'hi', label: 'हिंदी', placeholder: "नम्मा एआई से पूछें: 'इंदिरानगर के पास शौचालय'…", speechLang: 'hi-IN' },
 ]
 
 export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBarProps) {
@@ -132,7 +132,6 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
     try {
       const reply = await onSubmit(text.trim(), lang)
       setResponse(reply)
-      // Automatically read aloud the answer
       speakResponse(reply)
     } catch {
       setResponse(
@@ -153,46 +152,47 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
   }
 
   return (
-    <div className="w-full my-3 flex flex-col items-center">
-      {/* Language Switcher Pills */}
-      <div className="flex items-center gap-1.5 mb-2 bg-white/70 backdrop-blur-md px-2 py-1 rounded-full border border-slate-200/80 shadow-xs">
-        <span className="material-symbols-outlined text-[14px] text-slate-500 ml-1">translate</span>
-        <span className="text-[11px] font-semibold text-slate-600 mr-1 uppercase tracking-wider">Language:</span>
-        {LANGUAGES.map((lang) => (
-          <button
-            key={lang.code}
-            type="button"
-            onClick={() => {
-              setLanguage(lang.code)
-              if (isSpeaking) {
-                window.speechSynthesis.cancel()
-                setIsSpeaking(false)
-              }
-            }}
-            className={`px-2.5 py-0.5 rounded-full text-xs font-bold transition-all ${
-              language === lang.code
-                ? 'bg-[#123C3A] text-white shadow-xs scale-105'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            {lang.label}
-          </button>
-        ))}
-      </div>
-
+    <div className="w-full flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white/80 backdrop-blur-xl border border-white/90 rounded-full px-3 sm:px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] flex items-center gap-2 transition-all hover:bg-white/95 focus-within:ring-2 focus-within:ring-[#006398]/50 focus-within:border-white"
+        className="w-full bg-white/95 backdrop-blur-xl border border-white/90 rounded-full px-2 sm:px-3 py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] flex items-center gap-1.5 sm:gap-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#006398]/50 focus-within:border-white"
       >
-        <span className="material-symbols-outlined text-[#006398] text-[22px] flex-shrink-0">
-          auto_awesome
-        </span>
+        {/* Inline Language Dropdown Pill */}
+        <div className="relative flex items-center">
+          <div className="flex items-center gap-1 bg-slate-100/90 hover:bg-slate-200 text-slate-800 px-2 py-1 rounded-full text-xs font-bold cursor-pointer transition-colors border border-slate-200/80">
+            <span className="material-symbols-outlined text-[15px] text-slate-600">translate</span>
+            <select
+              value={language}
+              onChange={(e) => {
+                const newLang = e.target.value as SupportedLanguage
+                setLanguage(newLang)
+                if (isSpeaking) {
+                  window.speechSynthesis.cancel()
+                  setIsSpeaking(false)
+                }
+              }}
+              className="bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer pr-1 appearance-none"
+              title="Select Language"
+            >
+              {LANGUAGES.map((l) => (
+                <option key={l.code} value={l.code} className="text-slate-900 font-semibold">
+                  {l.label}
+                </option>
+              ))}
+            </select>
+            <span className="material-symbols-outlined text-[13px] text-slate-500 pointer-events-none -ml-0.5">
+              expand_more
+            </span>
+          </div>
+        </div>
+
+        {/* Input Text Field */}
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder || currentLangObj.placeholder}
-          className="flex-1 bg-transparent text-[#131b2e] placeholder:text-slate-400 text-sm md:text-base outline-none font-medium min-w-0"
+          className="flex-1 bg-transparent text-[#131b2e] placeholder:text-slate-400 text-xs sm:text-sm md:text-base outline-none font-medium min-w-0 px-1"
         />
 
         {/* Voice Input (Microphone) Button */}
@@ -200,14 +200,14 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
           type="button"
           onClick={toggleListening}
           aria-label={isListening ? 'Listening… Tap to cancel' : 'Voice search'}
-          className={`w-9 h-9 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${
+          className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${
             isListening
               ? 'bg-rose-600 text-white animate-pulse shadow-md'
               : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
           }`}
           title={isListening ? 'Listening to voice...' : 'Speak your query'}
         >
-          <span className="material-symbols-outlined text-[19px]">
+          <span className="material-symbols-outlined text-[18px] sm:text-[19px]">
             {isListening ? 'mic' : 'mic_none'}
           </span>
         </button>
@@ -217,12 +217,12 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
           type="submit"
           disabled={!query.trim() || isLoading}
           aria-label="Send Query"
-          className="w-9 h-9 rounded-full bg-[#123C3A] hover:bg-[#003244] disabled:opacity-40 text-white flex items-center justify-center transition-transform active:scale-95 flex-shrink-0 shadow-sm"
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#123C3A] hover:bg-[#003244] disabled:opacity-40 text-white flex items-center justify-center transition-transform active:scale-95 flex-shrink-0 shadow-sm"
         >
           {isLoading ? (
-            <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+            <span className="material-symbols-outlined text-[17px] animate-spin">progress_activity</span>
           ) : (
-            <span className="material-symbols-outlined text-[18px]">arrow_upward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_upward</span>
           )}
         </button>
       </form>
@@ -237,7 +237,7 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
 
       {/* Instant Answer Bubble with Voice Read-Aloud */}
       {response && (
-        <div className="w-full max-w-2xl mt-3 p-4 bg-white/95 backdrop-blur-xl border border-white/90 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="w-full mt-2.5 p-3.5 sm:p-4 bg-white/95 backdrop-blur-xl border border-white/90 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="flex items-center justify-between gap-2 mb-1.5 pb-2 border-b border-slate-100">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -247,7 +247,6 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Text-To-Speech Listen Button */}
               <button
                 type="button"
                 onClick={() => speakResponse(response)}
