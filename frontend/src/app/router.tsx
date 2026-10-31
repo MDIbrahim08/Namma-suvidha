@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
 import AppShell from './layout/AppShell'
-import LandingPage from '../pages/LandingPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import ErrorBoundary from '../components/ErrorBoundary'
 import CitizenHome from '../features/citizen/pages/CitizenHome'
@@ -12,7 +11,7 @@ export const routes = [
     element: <AppShell />,
     errorElement: <ErrorBoundary />,
     children: [
-      { path: '/', element: <LandingPage /> },
+      { path: '/', element: <CitizenHome /> },
       { path: '/citizen', element: <CitizenHome /> },
       { path: '/evaluator', element: <EvaluatorHome /> },
       { path: '/admin', element: <AdminDashboard /> },

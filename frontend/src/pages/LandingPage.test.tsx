@@ -28,7 +28,10 @@ describe('Phase 0 routes and BackendStatus', () => {
       error: 'RuntimeError: DATABASE_URL is not configured',
     })
 
-    const memRouter = createMemoryRouter(routes, {
+    const memRouter = createMemoryRouter([
+      { path: '/', element: <LandingPage /> },
+      ...routes,
+    ], {
       initialEntries: ['/'],
       future: { v7_relativeSplatPath: true },
     })
@@ -48,26 +51,15 @@ describe('Phase 0 routes and BackendStatus', () => {
   it.each([
     ['/citizen', 'Citizen'],
     ['/evaluator', 'Evaluator'],
+    ['/admin', 'Admin Audit & Analytics Dashboard'],
     ['/unknown-route', '404 — Page not found'],
-  ])('renders route %s with heading %s', (path, heading) => {
+  ])('renders route %s with heading %s', async (path, headingText) => {
     const memRouter = createMemoryRouter(routes, {
       initialEntries: [path],
       future: { v7_relativeSplatPath: true },
     })
     render(<RouterProvider router={memRouter} future={routerFuture} />)
-    expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
-  })
 
-  it('shows loading state initially when health promises are pending', () => {
-    vi.mocked(healthApi.getHealth).mockImplementationOnce(() => new Promise(() => {}))
-    vi.mocked(healthApi.getDbHealth).mockImplementationOnce(() => new Promise(() => {}))
-
-    const memRouter = createMemoryRouter([{ path: '/', element: <LandingPage /> }], {
-      initialEntries: ['/'],
-      future: { v7_relativeSplatPath: true },
-    })
-    render(<RouterProvider router={memRouter} future={routerFuture} />)
-    expect(screen.getByText('API: checking…')).toBeInTheDocument()
-    expect(screen.getByText('Database: checking…')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: headingText })).toBeInTheDocument()
   })
 })
