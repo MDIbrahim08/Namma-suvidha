@@ -41,15 +41,23 @@ const LANGUAGE_INSTRUCTIONS: Record<SupportedLanguage, string> = {
  * Supercharged Live ChatGPT-Style Conversational LLM Engine for Bengaluru Civic Sanitation
  * Connects directly to Groq high-speed Llama-3.3 / OpenRouter with fluent natural language generation.
  */
-export async function askCivicSuperLLM(ctx: CivicAiQueryContext): Promise<string> {
+export async function askCivicSuperLLM(ctx: any): Promise<string> {
+  const query = (ctx.userQuery || ctx.prompt || '').toLowerCase().trim()
+  const lang: SupportedLanguage = ctx.language || 'en'
+
+  if (query === 'hi' || query === 'hello' || query.startsWith('hi ') || query.startsWith('hello ')) {
+    if (lang === 'kn') return 'ನಮಸ್ಕಾರ! ನಾನು ನಮ್ಮ ಸುವಿಧಾ AI ಸಹಾಯಕ. ನಿಮ್ಮ ಹತ್ತಿರದ ಬಿಬಿಎಂಪಿ ಶೌಚಾಲಯಗಳನ್ನು ಹುಡುಕಲು ನಾನು ಸಹಾಯ ಮಾಡಬಲ್ಲೆ.'
+    if (lang === 'hi') return 'नमस्ते! मैं नम्मा सुविधा AI सहायक हूँ। मैं आपके आस-पास के स्वच्छ शौचालयों को खोजने में मदद कर सकता हूँ।'
+    return 'Hello! I am Namma Suvidha AI assistant. I can help you find verified, clean, and accessible public toilets across Bengaluru. How can I help you today?'
+  }
   const lang = ctx.language || 'en'
   const langInstruction = LANGUAGE_INSTRUCTIONS[lang] || LANGUAGE_INSTRUCTIONS.en
 
   // 1. Feature Filter Matching
-  const matched = ctx.facilities.filter((f) => {
-    if (ctx.userPreferences.wantsWheelchair && f.wheelchair !== 'yes') return false
-    if (ctx.userPreferences.wantsFree && f.fee && !['no', 'free', '0'].includes(f.fee.toLowerCase())) return false
-    if (ctx.userPreferences.wantsBabyChanging && f.changingTable !== 'yes') return false
+  const matched = (ctx.facilities || []).filter((f: any) => {
+    if (ctx.userPreferences?.wantsWheelchair && f.wheelchair !== 'yes') return false
+    if (ctx.userPreferences?.wantsFree && f.fee && !['no', 'free', '0'].includes(f.fee.toLowerCase())) return false
+    if (ctx.userPreferences?.wantsBabyChanging && f.changingTable !== 'yes') return false
     return true
   })
 
