@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getNearbyToilets } from '../../../lib/api/discovery'
 import { getFallbackNearbyToilets } from '../../../lib/api/bbmpFallback'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
@@ -6,7 +6,7 @@ import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.type
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
 import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
 import { askCivicSuperLLM, type SupportedLanguage } from '../../../lib/api/llm'
-import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
+import { detectDeviceLocation, watchDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
   formatAddress,
   formatCoordinates,

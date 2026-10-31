@@ -1,7 +1,7 @@
 /**
- * Browser Geolocation wrapper for real-time citizen location detection.
+ * Browser Geolocation wrapper for real-time citizen location detection and live tracking.
  *
- * Strictly uses `navigator.geolocation.getCurrentPosition()` with:
+ * Strictly uses `navigator.geolocation.getCurrentPosition()` and `watchPosition()` with:
  * - enableHighAccuracy: true
  * - timeout: 15000
  * - maximumAge: 0
@@ -73,7 +73,6 @@ export function detectDeviceLocation(): Promise<UserLocation> {
         })
       },
       (geoError) => {
-        // Standard GeolocationPositionError codes: 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
         if (geoError.code === 1) {
           reject(
             new DeviceLocationError(
@@ -111,4 +110,59 @@ export function detectDeviceLocation(): Promise<UserLocation> {
       GEOLOCATION_OPTIONS,
     )
   })
+}
+
+/**
+ * Live GPS tracking watcher: Updates callback whenever the citizen walks or changes coordinates.
+ */
+export function watchDeviceLocation(
+  onLocationUpdate: (loc: UserLocation) => void,
+  onError?: (err: DeviceLocationError) => void,
+): () => void {
+  if (
+    typeof navigator === 'undefined' ||
+    !('geolocation' in navigator) ||
+    !navigator.geolocation
+  ) {
+    if (onError) {
+      onError(new DeviceLocationError('UNSUPPORTED', 'Geolocation is not supported by this device.'))
+    }
+    return () => {}
+  }
+
+  const watchId = navigator.geolocation.watchPosition(
+    (position) => {
+      onLocationUpdate({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracyMeters:
+          typeof position.coords.accuracy === 'number'
+            ? Math.round(position.coords.accuracy)
+            : null,
+      })
+    },
+    (geoError) => {
+      if (onError) {
+        onError(
+          new DeviceLocationError(
+            geoError.code === 1
+              ? 'PERMISSION_DENIED'
+              : geoError.code === 2
+              ? 'POSITION_UNAVAILABLE'
+              : 'TIMEOUT',
+            geoError.message,
+          ),
+        )
+      }
+    },
+    {
+      enableHighAccuracy: true,
+      maximumAge: 2000,
+      timeout: 10000,
+    },
+  )
+
+  return () => {
+    navigator.geolocation.clearWatch(watchId)
+  }
 }
