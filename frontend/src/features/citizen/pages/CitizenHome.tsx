@@ -4,8 +4,8 @@ import { getFallbackNearbyToilets } from '../../../lib/api/bbmpFallback'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
 
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
-import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
-import { askCivicSuperLLM, type SupportedLanguage } from '../../../lib/api/llm'
+// import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
+// import { askCivicSuperLLM, type SupportedLanguage } from '../../../lib/api/llm'
 import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
   formatAddress,
@@ -173,7 +173,7 @@ export default function CitizenHome() {
     void handleDetectAndDiscover()
   }, [])
 
-  const handleRadiusChange = useCallback(
+  const _handleRadiusChange = useCallback(
     async (newRadius: number) => {
       setRadiusMeters(newRadius)
       if (userLocation) {
@@ -199,7 +199,7 @@ export default function CitizenHome() {
 
 
 
-  const handleAiQuery = useCallback(
+  const _handleAiQuery = useCallback(
     async (promptText: string, lang: SupportedLanguage = 'en'): Promise<string> => {
       const queryLower = promptText.toLowerCase().trim()
 
