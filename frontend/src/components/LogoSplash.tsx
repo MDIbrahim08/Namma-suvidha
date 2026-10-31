@@ -23,22 +23,18 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
   }
 
   useEffect(() => {
-    // Check prefers-reduced-motion
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       handleDismiss()
       return
     }
 
-    // Try playing video safely with sound muted
     if (videoRef.current) {
       videoRef.current.muted = true
       videoRef.current.play().catch(() => {
-        // Autoplay policy or video load issue -> switch to rich animated SVG/iframe fallback
         setUseFallback(true)
       })
     }
 
-    // 4.5-second total display timer
     const timer = setTimeout(() => {
       handleDismiss()
     }, 4500)
@@ -52,12 +48,13 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
     <div
       role="region"
       aria-label="Welcome Logo Reveal"
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-white transition-opacity duration-500 px-4 ${
+      style={{ backgroundColor: '#e9e9dd' }}
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-500 px-4 ${
         isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       {!useFallback ? (
-        <div className="relative w-full max-w-xl flex flex-col items-center justify-center">
+        <div className="relative w-full max-w-2xl flex flex-col items-center justify-center">
           <video
             ref={videoRef}
             src="/logo-reveal.mp4"
@@ -67,12 +64,12 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
             preload="auto"
             onEnded={handleDismiss}
             onError={() => setUseFallback(true)}
-            className="w-full max-w-md h-auto aspect-square object-contain drop-shadow-xl rounded-2xl"
+            className="w-full max-w-lg md:max-w-xl h-auto object-contain mix-blend-multiply"
           />
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center animate-in fade-in zoom-in-95 duration-500">
-          <div className="relative p-6 sm:p-8 bg-gradient-to-b from-emerald-50/70 to-white rounded-3xl border border-emerald-100 shadow-2xl flex flex-col items-center">
+          <div className="relative p-6 sm:p-8 bg-[#e9e9dd] rounded-3xl border border-stone-300/60 shadow-lg flex flex-col items-center">
             <img
               src="/logo.png"
               alt="Namma Suvidha"
@@ -82,7 +79,7 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
             <h1 className="mt-4 text-2xl sm:text-3xl font-black text-[#123C3A] tracking-tight">
               ನಮ್ಮ Suvidha
             </h1>
-            <p className="text-xs sm:text-sm font-medium text-emerald-800/80 mt-1">
+            <p className="text-xs sm:text-sm font-medium text-emerald-900/80 mt-1">
               Bengaluru Public Sanitation Network
             </p>
           </div>
@@ -92,7 +89,7 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
       <button
         type="button"
         onClick={handleDismiss}
-        className="absolute top-5 right-5 z-10 px-4 py-1.5 text-xs font-bold tracking-wider uppercase text-slate-600 bg-slate-100/90 hover:bg-slate-200 active:scale-95 rounded-full transition-all shadow-sm border border-slate-200"
+        className="absolute top-5 right-5 z-10 px-4 py-1.5 text-xs font-bold tracking-wider uppercase text-stone-700 bg-white/70 hover:bg-white active:scale-95 rounded-full transition-all shadow-sm border border-stone-300"
       >
         Skip &rarr;
       </button>
