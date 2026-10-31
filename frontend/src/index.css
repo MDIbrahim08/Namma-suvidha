@@ -241,3 +241,266 @@ body {
     animation: none;
   }
 }
+
+
+/* ── 21st.dev AI Thinking Orb and Input Styles ── */
+@keyframes mo-spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes mo-drift {
+  from {
+    transform: translateX(-14%);
+  }
+  to {
+    transform: translateX(14%);
+  }
+}
+
+@keyframes mo-shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes mo-dot {
+  0%, 80%, 100% {
+    opacity: .25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes mo-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mo-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes mo-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mo-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes mo-shake {
+  0%, 100% {
+    transform: translate(-50%, -50%);
+  }
+  25% {
+    transform: translate(calc(-50% - 4px), -50%);
+  }
+  75% {
+    transform: translate(calc(-50% + 4px), -50%);
+  }
+}
+
+.mo-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 220px;
+  overflow: visible;
+}
+
+.mo-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mo-mover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.mo-actor {
+  position: relative;
+  width: var(--w, 560px);
+  height: var(--h, 60px);
+  border-radius: var(--r, 999px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 60, 58, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(242, 238, 229, 0.25);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s ease;
+}
+
+.mo-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+  gap: 12px;
+  opacity: var(--oInput, 1);
+  transform: scale(var(--inScale, 1));
+}
+
+.mo-spark {
+  width: 22px;
+  height: 22px;
+  color: #D18B55;
+  flex-shrink: 0;
+}
+
+.mo-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #F2EEE5;
+  font-size: 15px;
+}
+
+.mo-field::placeholder {
+  color: rgba(242, 238, 229, 0.6);
+}
+
+.mo-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: #D18B55;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  opacity: 0.85;
+}
+
+.mo-send:hover {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.mo-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: var(--orb-alpha, 0);
+}
+
+.mo-pulse {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(209, 139, 85, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.mo-answer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  color: #F2EEE5;
+  opacity: var(--oCard, 0);
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.mo-a-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #D18B55;
+  margin-bottom: 6px;
+}
+
+.mo-a-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #D18B55;
+}
+
+.mo-a-body {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #F2EEE5;
+  opacity: var(--hOp, 1);
+}
+
+.mo-status {
+  position: absolute;
+  top: calc(50% + 75px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: var(--sOp, 0);
+  transform: translateY(var(--sTy, 0px));
+  pointer-events: none;
+  color: #D18B55;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.mo-reset {
+  margin-top: 12px;
+  background: transparent;
+  border: 1px solid rgba(242, 238, 229, 0.2);
+  color: #F2EEE5;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  cursor: pointer;
+  display: none;
+}
+
+.mo-root[data-phase="answered"] .mo-reset {
+  display: block;
+}
