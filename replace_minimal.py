@@ -95,3 +95,4 @@ with open('frontend/src/features/citizen/pages/CitizenHome.tsx', 'w', encoding='
     f.writelines(final_lines)
 
 print('SUCCESSFULLY REPLACED WITH MINIMAL DESIGN')
+

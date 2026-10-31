@@ -89,7 +89,7 @@ export default function CitizenHome() {
   const [radiusMeters, setRadiusMeters] = useState<number>(10000)
   const [toilets, setToilets] = useState<NearbyToilet[]>([])
   const [selectedToilet, setSelectedToilet] = useState<NearbyToilet | null>(null)
-  const [searchText, setSearchText] = useState<string>('')
+  const [searchText] = useState<string>('')
 
   // OSM Tag Filter states (from supplied sanitation_inclusivity_filters screen)
   const [freeOnly, setFreeOnly] = useState<boolean>(false)
