@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getNearbyToilets } from '../../../lib/api/discovery'
 import { getFallbackNearbyToilets } from '../../../lib/api/bbmpFallback'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
@@ -167,6 +167,12 @@ export default function CitizenHome() {
     },
     [radiusMeters, fetchForCoordinates],
   )
+
+  // Automatically acquire device GPS on initial mount so voice queries immediately use true location
+  useEffect(() => {
+    void handleDetectAndDiscover()
+  }, [])
+
   const handleRadiusChange = useCallback(
     async (newRadius: number) => {
       setRadiusMeters(newRadius)
@@ -229,7 +235,7 @@ export default function CitizenHome() {
       if (wantsChangingTable) setChangingTableOnly(true)
       if (wantsPublic) setPublicAccessOnly(true)
 
-      // 3. Resolve location / landmark
+      // 3. Resolve location / landmark (Always prioritize live device GPS)
       let targetCoords: UserLocation | null = null
       let locationLabel = ''
 
@@ -240,20 +246,15 @@ export default function CitizenHome() {
       if (matchedLandmark) {
         targetCoords = matchedLandmark.coords
         locationLabel = matchedLandmark.name
-      } else if (/near me|around me|closest|current location|my location|here/i.test(queryLower)) {
+      } else {
+        // Always attempt live GPS detection for voice queries like 'nearby', 'आसपास', 'ಹತ್ತಿರ', or general queries
         try {
           targetCoords = await detectDeviceLocation()
-          locationLabel = 'your device GPS location'
+          locationLabel = 'your live GPS location'
         } catch {
           targetCoords = userLocation ?? { latitude: 12.9767, longitude: 77.5713 }
-          locationLabel = userLocation ? 'your last detected location' : 'Bengaluru Central (Majestic)'
+          locationLabel = userLocation ? 'your current GPS location' : 'Bengaluru Central (Majestic)'
         }
-      } else if (userLocation) {
-        targetCoords = userLocation
-        locationLabel = 'your location'
-      } else {
-        targetCoords = { latitude: 12.9767, longitude: 77.5713 }
-        locationLabel = 'Bengaluru Central (Majestic)'
       }
 
       setUserLocation(targetCoords)
