@@ -18,3 +18,4 @@ with open('frontend/src/features/citizen/pages/CitizenHome.tsx', 'w', encoding='
     f.write(text)
 
 print('SUCCESS HOOKED AUTO-GPS ON MOUNT')
+
