@@ -5,6 +5,7 @@ import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.type
 
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
 import MorphOrb from '../../../components/ui/ai-thiking-orb-and-input'
+import { askCivicLLM } from '../../../lib/api/llm'
 import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
   formatAddress,
@@ -298,19 +299,24 @@ export default function CitizenHome() {
       }
       setActiveView('map')
 
-      // 5. Construct truthful narrative response
+      // 5. Construct truthful narrative response via LLM + BBMP data grounding
       const radiusKm = (targetRadius / 1000).toFixed(targetRadius >= 1000 ? 0 : 1)
-      if (matchingList.length === 0) {
-        return `Searched ${locationLabel} within ${radiusKm} km across live BBMP OpenStreetMap records. Found ${foundToilets.length} total public washrooms, but none matched all selected filters (e.g. wheelchair=${wantsWheelchair ? 'yes' : 'any'}). Showing all nearby facilities on the live map.`
+      const candidateList = matchingList.length > 0 ? matchingList : foundToilets
+
+      const llmContext = {
+        locationLabel,
+        radiusKm,
+        totalFound: candidateList.length,
+        toilets: candidateList.slice(0, 5).map((t) => ({
+          name: getDisplayName(t),
+          distance: formatDistance(t.distance_meters, t.distance_km),
+          wheelchair: t.tags.wheelchair,
+          fee: t.tags.fee,
+          address: formatAddress(t.address) ?? undefined,
+        })),
       }
 
-      const top = matchingList[0]
-      const topName = getDisplayName(top)
-      const distStr = formatDistance(top.distance_meters, top.distance_km)
-      const topAddress = formatAddress(top.address) ?? 'BBMP Ward facility'
-      const filterDesc = wantsWheelchair ? ' wheelchair-accessible' : wantsFree ? ' free public' : ''
-
-      return `Found ${matchingList.length} verified${filterDesc} public washroom${matchingList.length === 1 ? '' : 's'} near ${locationLabel} within ${radiusKm} km. Closest is "${topName}" (${distStr} away at ${topAddress}). Live map markers and navigation route updated.`
+      return await askCivicLLM(promptText, llmContext)
     },
     [radiusMeters, userLocation],
   )

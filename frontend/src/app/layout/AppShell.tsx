@@ -4,6 +4,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { env } from '../../config/env'
 import LogoSplash from '../../components/LogoSplash'
 import LiquidGlassNavbar from '../../components/ui/liquid-glass-navbar'
+import BackgroundGlow from '../../components/ui/background-components'
 
 const navItems = [
   { to: '/', label: 'Citizen', icon: 'explore' },
@@ -23,9 +24,9 @@ export default function AppShell() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+    <BackgroundGlow className="text-slate-900">
       {showSplash && <LogoSplash onFinish={handleSplashFinish} />}
-      <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-md sticky top-0 z-30">
+      <header className="border-b border-slate-200/80 bg-white/75 backdrop-blur-md sticky top-0 z-30">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-2.5">
           <Link
             to="/"
@@ -40,7 +41,7 @@ export default function AppShell() {
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
         <Outlet />
       </main>
-      <footer className="border-t border-slate-200 bg-white py-4 px-4 text-xs text-slate-500">
+      <footer className="border-t border-slate-200/70 bg-white/70 backdrop-blur-sm py-4 px-4 text-xs text-slate-500">
         <div className="mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Team Agentics · Problem Statement CS/26-0018 · AI for Citizen Well-Being</span>
           <Link
@@ -52,6 +53,6 @@ export default function AppShell() {
           </Link>
         </div>
       </footer>
-    </div>
+    </BackgroundGlow>
   )
 }
