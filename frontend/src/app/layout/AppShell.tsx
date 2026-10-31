@@ -13,14 +13,10 @@ const navItems = [
 ]
 
 export default function AppShell() {
-  const [showSplash, setShowSplash] = useState(() => {
-    // Show only once per browser session
-    return !sessionStorage.getItem('namma_suvidha_splash_seen')
-  })
+  const [showSplash, setShowSplash] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleSplashFinish = () => {
-    sessionStorage.setItem('namma_suvidha_splash_seen', 'true')
     setShowSplash(false)
   }
 
