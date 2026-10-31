@@ -1,11 +1,13 @@
 """FastAPI application factory."""
 
 import logging
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 
 from app import __version__
@@ -48,6 +50,10 @@ def create_app() -> FastAPI:
         {
             "name": "government",
             "description": "Government facility monitoring & feedback-driven cleaning.",
+        },
+        {
+            "name": "admin",
+            "description": "Internal Admin Audit Logs, Platform Analytics & KPI Overview.",
         },
     ]
     app = FastAPI(title=settings.APP_NAME, version=__version__, openapi_tags=openapi_tags)
@@ -95,6 +101,25 @@ def create_app() -> FastAPI:
     # Also mount discovery router under /api so GET /api/toilets/nearby and
     # GET /api/v1/toilets/nearby both resolve cleanly.
     app.include_router(discovery_router, prefix="/api", include_in_schema=False)
+
+    # -------------------------------------------------------------------------
+    # Mount Frontend SPA on the SAME host and port (Unified Single Localhost)
+    # -------------------------------------------------------------------------
+    frontend_dist = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+    if frontend_dist.exists() and (frontend_dist / "index.html").exists():
+        assets_dir = frontend_dist / "assets"
+        if assets_dir.exists():
+            app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+        @app.get("/{full_path:path}", include_in_schema=False)
+        async def serve_spa(full_path: str):
+            # Do not intercept API or Swagger docs
+            if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
+                raise HTTPException(status_code=404, detail="Not Found")
+            file_candidate = frontend_dist / full_path
+            if full_path and file_candidate.exists() and file_candidate.is_file():
+                return FileResponse(file_candidate)
+            return FileResponse(frontend_dist / "index.html")
 
     logger.info(
         "Starting %s env=%s database_url_set=%s",

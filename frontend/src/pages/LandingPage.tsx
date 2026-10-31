@@ -14,21 +14,12 @@ const modules = [
   },
   {
     to: '/evaluator',
-    title: 'Evaluator Portal',
-    badge: 'Gig Inspector',
-    icon: 'verified_user',
-    color: 'border-blue-500 hover:border-blue-600 group-hover:bg-blue-50',
-    iconBg: 'bg-blue-100 text-blue-700',
-    text: 'Carry out cryptographic WebAuthn-verified audits, submit photo checklists, and earn inspection compensation.',
-  },
-  {
-    to: '/government',
-    title: 'Government Dashboard',
-    badge: 'BBMP Municipal',
-    icon: 'admin_panel_settings',
-    color: 'border-indigo-500 hover:border-indigo-600 group-hover:bg-indigo-50',
-    iconBg: 'bg-indigo-100 text-indigo-700',
-    text: 'Zonal hygiene monitoring, automated incident triage, AEE engineer escalation, and closed-loop ticketing.',
+    title: 'Volunteer Portal',
+    badge: 'Civic Inspector',
+    icon: 'volunteer_activism',
+    color: 'border-emerald-500 hover:border-emerald-600 group-hover:bg-emerald-50',
+    iconBg: 'bg-emerald-100 text-emerald-700',
+    text: 'Register as a civic volunteer with real-time GPS & ID verification, complete hygiene audits, and track honorarium.',
   },
 ]
 

@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.api.v1 import citizen, evaluator, government, health
+from app.api.v1 import admin, citizen, evaluator, government, health
 from app.modules.discovery.router import router as discovery_router
 
 api_router = APIRouter()
@@ -11,4 +11,5 @@ api_router.include_router(citizen.router)
 api_router.include_router(discovery_router)
 api_router.include_router(evaluator.router)
 api_router.include_router(government.router)
+api_router.include_router(admin.router)
 

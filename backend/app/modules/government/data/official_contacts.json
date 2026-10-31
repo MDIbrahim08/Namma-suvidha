@@ -1,0 +1,62 @@
+[
+  {
+    "id": "contact-bbmp-west",
+    "recipient_name": "Ramesh Kumar",
+    "department_designation": "BBMP West Zone Ward Sanitation Supervisor",
+    "city_corporation": "Bruhat Bengaluru Mahanagara Palike (BBMP)",
+    "ward_mappings": ["Gandhinagar", "Majestic", "Chickpet", "Subhash Nagar", "Ward 94", "Ward 109"],
+    "official_email": "bbmp.west.sanitation.test@example.org",
+    "office_phone": "+91-80-22220001",
+    "notification_channel": "email",
+    "active": true,
+    "is_escalation_supervisor": false
+  },
+  {
+    "id": "contact-bbmp-east",
+    "recipient_name": "Suma Nair",
+    "department_designation": "BBMP East Zone Facility Nodal Officer",
+    "city_corporation": "Bruhat Bengaluru Mahanagara Palike (BBMP)",
+    "ward_mappings": ["Hoysala Nagar", "Indiranagar", "CV Raman Nagar", "Ward 80", "East Zone"],
+    "official_email": "bbmp.east.sanitation.test@example.org",
+    "office_phone": "+91-80-22220002",
+    "notification_channel": "email",
+    "active": true,
+    "is_escalation_supervisor": false
+  },
+  {
+    "id": "contact-bbmp-south",
+    "recipient_name": "Kiran Rao",
+    "department_designation": "BBMP South Zone Sanitation Inspector",
+    "city_corporation": "Bruhat Bengaluru Mahanagara Palike (BBMP)",
+    "ward_mappings": ["Jayanagar", "JP Nagar", "Basavanagudi", "Ward 153", "South Zone"],
+    "official_email": "bbmp.south.sanitation.test@example.org",
+    "office_phone": "+91-80-22220003",
+    "notification_channel": "email",
+    "active": true,
+    "is_escalation_supervisor": false
+  },
+  {
+    "id": "contact-bbmp-bommanahalli",
+    "recipient_name": "Deepak Reddy",
+    "department_designation": "BBMP Bommanahalli Division Health Inspector",
+    "city_corporation": "Bruhat Bengaluru Mahanagara Palike (BBMP)",
+    "ward_mappings": ["Bommanahalli", "Electronic City", "Anekal", "Chandapura", "Bommasandra", "Ward 174", "Ward 175"],
+    "official_email": "bbmp.bommanahalli.test@example.org",
+    "office_phone": "+91-80-22220004",
+    "notification_channel": "email",
+    "active": true,
+    "is_escalation_supervisor": false
+  },
+  {
+    "id": "contact-bbmp-swm-chief",
+    "recipient_name": "Executive Chief Engineer (SWM)",
+    "department_designation": "BBMP Chief Sanitation & Solid Waste Management Authority",
+    "city_corporation": "Bruhat Bengaluru Mahanagara Palike (BBMP)",
+    "ward_mappings": ["*"],
+    "official_email": "bbmp.swm.chief.escalations.test@example.org",
+    "office_phone": "+91-80-22220099",
+    "notification_channel": "email",
+    "active": true,
+    "is_escalation_supervisor": true
+  }
+]

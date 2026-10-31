@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
+import { env } from '../../../config/env'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
 import { formatDistance, getDisplayName } from '../utils/formatters'
 
@@ -33,9 +34,15 @@ export default function CitizenDiscoveryMap({
         attributionControl: true,
       }).setView([20.5937, 78.9629], 5)
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      const tileUrl = env.mapboxToken
+        ? `https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=${env.mapboxToken}`
+        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+      L.tileLayer(tileUrl, {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors',
+        tileSize: env.mapboxToken ? 512 : 256,
+        zoomOffset: env.mapboxToken ? -1 : 0,
+        attribution: '&copy; Mapbox &copy; OpenStreetMap contributors',
       }).addTo(map)
 
       const layerGroup = L.layerGroup().addTo(map)

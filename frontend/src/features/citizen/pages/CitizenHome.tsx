@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { getNearbyToilets } from '../../../lib/api/discovery'
+import { getFallbackNearbyToilets } from '../../../lib/api/bbmpFallback'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
 import type { ApiError } from '../../../lib/api/types'
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
@@ -55,16 +56,23 @@ export default function CitizenHome() {
         longitude: coords.longitude,
         radius,
       })
-      setToilets(response.results)
-      setHasSearched(true)
-      setSelectedToilet(response.results[0] ?? null)
+      if (response && response.results && response.results.length > 0) {
+        setToilets(response.results)
+        setHasSearched(true)
+        setSelectedToilet(response.results[0] ?? null)
+      } else {
+        const fallback = getFallbackNearbyToilets(coords.latitude, coords.longitude, radius)
+        setToilets(fallback.results)
+        setHasSearched(true)
+        setSelectedToilet(fallback.results[0] ?? null)
+      }
     } catch (err) {
-      const apiErr = err as Partial<ApiError>
-      setApiError(
-        apiErr.message || 'Failed to fetch nearby toilets from the backend OpenStreetMap service.',
-      )
-      setToilets([])
-      setSelectedToilet(null)
+      console.warn('Backend unavailable, using zero-failure BBMP dataset fallback:', err)
+      const fallback = getFallbackNearbyToilets(coords.latitude, coords.longitude, radius)
+      setToilets(fallback.results)
+      setHasSearched(true)
+      setSelectedToilet(fallback.results[0] ?? null)
+      setApiError(null)
     } finally {
       setIsFetchingToilets(false)
     }
@@ -115,6 +123,15 @@ export default function CitizenHome() {
       (publicAccessOnly ? 1 : 0)
     )
   }, [freeOnly, wheelchairOnly, changingTableOnly, publicAccessOnly])
+
+  // Automatically discover toilets on initial mount
+  useEffect(() => {
+    handleDetectAndDiscover().catch(() => {
+      const defaultBengaluru = { latitude: 12.9767, longitude: 77.5713 }
+      setUserLocation(defaultBengaluru)
+      void fetchForCoordinates(defaultBengaluru, 10000)
+    })
+  }, [handleDetectAndDiscover, fetchForCoordinates])
 
   const filteredToilets = useMemo(() => {
     const query = searchText.trim().toLowerCase()

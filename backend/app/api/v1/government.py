@@ -47,13 +47,16 @@ from app.schemas.government import (
     FacilityFeedbackMeta,
     FacilityFeedbackResponse,
     FacilitySummary,
+    GovernmentAuditRecord,
     IssueNotifyRequest,
     IssueTransitionRequest,
     MaintenanceIssue,
     NotificationRecord,
+    OfficialContact,
     OverviewStatistics,
     PaginatedResponse,
     RepeatedComplaintCluster,
+    StructuredIncidentReport,
 )
 
 router = APIRouter(
@@ -301,6 +304,10 @@ def transition_issue_status(
         return services.notifications.acknowledge(
             issue_id, actor_id=actor_id, note=body.note, now=now
         )
+    if body.to_status == IssueStatus.resolved:
+        return services.notifications.resolve(
+            issue_id, actor_id=actor_id, note=body.note or "Resolved by authority", now=now
+        )
     return services.issues.transition_issue(
         issue_id,
         to_status=body.to_status,
@@ -308,6 +315,51 @@ def transition_issue_status(
         note=body.note,
         now=now,
     )
+
+
+@router.get("/incidents/{issue_id}/report", response_model=StructuredIncidentReport)
+def get_incident_report(
+    issue_id: str,
+    services: GovernmentServices = Depends(get_services),
+) -> StructuredIncidentReport:
+    """Retrieve the full structured 11-point government incident report."""
+    issue = services.issues.get_issue(issue_id)
+    return services.notifications.generate_incident_report(
+        issue=issue, now=services.clock.now()
+    )
+
+
+@router.post("/incidents/escalate-overdue", response_model=list[NotificationRecord])
+def escalate_overdue_incidents(
+    principal: Any = Depends(require_government_user),
+    services: GovernmentServices = Depends(get_services),
+) -> list[NotificationRecord]:
+    """Scan and trigger automated escalation notifications for issues exceeding the response deadline."""
+    actor_id = extract_actor_id(principal)
+    return services.notifications.check_and_escalate_overdue_issues(
+        now=services.clock.now(), actor_id=actor_id
+    )
+
+
+@router.get("/audit/records", response_model=list[GovernmentAuditRecord])
+def list_audit_records(
+    incident_id: str | None = None,
+    event_type: str | None = None,
+    limit: int = Query(default=100, ge=1, le=500),
+    services: GovernmentServices = Depends(get_services),
+) -> list[GovernmentAuditRecord]:
+    """Internal audit logs of incident creation, notification generation, and delivery status."""
+    return services.notifications.list_audit_records(
+        incident_id=incident_id, event_type=event_type, limit=limit
+    )
+
+
+@router.get("/contacts", response_model=list[OfficialContact])
+def list_official_contacts(
+    services: GovernmentServices = Depends(get_services),
+) -> list[OfficialContact]:
+    """List configured official contacts for BBMP zones, wards, and escalation authorities."""
+    return services.notifications._contacts.list_contacts(active_only=False)
 
 
 @router.post("/_dev/load-fixtures", include_in_schema=False)

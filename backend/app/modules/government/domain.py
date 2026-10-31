@@ -221,6 +221,46 @@ class IssueAuditEntry(BaseModel):
     timestamp: datetime
 
 
+class StructuredIncidentReport(BaseModel):
+    """Complete 11-point official incident report for automated government alerts."""
+
+    incident_id: str
+    toilet_name: str
+    toilet_id: str
+    facility_address: str | None = None
+    facility_location: dict[str, float | None] = Field(default_factory=dict)
+    issue_category: str
+    related_complaints_count: int = 0
+    severity: int = Field(default=3, ge=1, le=5)
+    priority: str = "normal"  # urgent, high, normal
+    citizen_feedback_summary: str
+    volunteer_inspection_findings: dict[str, Any] | None = None
+    recommended_maintenance_action: str
+    detected_at: datetime
+    response_deadline: datetime
+    escalation_level: int = 0  # 0: initial, 1+: escalated overdue
+    is_overdue: bool = False
+
+
+class GovernmentAuditRecord(BaseModel):
+    """Internal backend audit trail record for government notifications and incidents."""
+
+    id: str
+    event_type: Literal[
+        "incident_creation",
+        "notification_generation",
+        "escalation_event",
+        "maintenance_resolution",
+        "status_transition",
+    ]
+    incident_id: str
+    facility_id: str
+    recipient: str | None = None
+    delivery_status: str | None = None
+    timestamp: datetime
+    details: dict[str, Any] = Field(default_factory=dict)
+
+
 class NotificationRecord(BaseModel):
     id: str
     issue_id: str

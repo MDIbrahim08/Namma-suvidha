@@ -2,18 +2,20 @@ import { createBrowserRouter } from 'react-router-dom'
 import AppShell from './layout/AppShell'
 import LandingPage from '../pages/LandingPage'
 import NotFoundPage from '../pages/NotFoundPage'
+import ErrorBoundary from '../components/ErrorBoundary'
 import CitizenHome from '../features/citizen/pages/CitizenHome'
 import EvaluatorHome from '../features/evaluator/pages/EvaluatorHome'
-import GovernmentHome from '../features/government/pages/GovernmentHome'
+import AdminDashboard from '../features/admin/pages/AdminDashboard'
 
 export const routes = [
   {
     element: <AppShell />,
+    errorElement: <ErrorBoundary />,
     children: [
-      { path: '/', element: <LandingPage /> },
+      { path: '/', element: <CitizenHome /> },
       { path: '/citizen', element: <CitizenHome /> },
       { path: '/evaluator', element: <EvaluatorHome /> },
-      { path: '/government', element: <GovernmentHome /> },
+      { path: '/admin', element: <AdminDashboard /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

@@ -12,17 +12,20 @@ from typing import Generic, TypeVar
 
 from pydantic import BaseModel, Field
 
+from app.modules.government.contacts import OfficialContact
 from app.modules.government.domain import (
     CitizenFeedbackItem,
     CleanlinessWindow,
     EvaluationSummary,
     FacilityDetail,
     FacilitySummary,
+    GovernmentAuditRecord,
     MaintenanceDetectionSummary,
     MaintenanceIssue,
     NotificationRecord,
     OverviewStatistics,
     RepeatedComplaintCluster,
+    StructuredIncidentReport,
 )
 from app.modules.government.enums import IssueStatus, NotificationChannel
 
@@ -68,13 +71,16 @@ __all__ = [
     "FacilityFeedbackMeta",
     "FacilityFeedbackResponse",
     "FacilitySummary",
+    "GovernmentAuditRecord",
     "IssueNotifyRequest",
     "IssueTransitionRequest",
     "MaintenanceDetectionSummary",
     "MaintenanceIssue",
     "NotificationRecord",
+    "OfficialContact",
     "OverviewStatistics",
     "PaginatedResponse",
     "RepeatedComplaintCluster",
+    "StructuredIncidentReport",
 ]
 
