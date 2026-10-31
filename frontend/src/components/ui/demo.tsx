@@ -1,7 +1,5 @@
-"use client";
-
-import { cn } from "@/lib/utils";
-import { DotPattern } from "@/components/ui/dot-pattern";
+import { cn } from "../../lib/utils";
+import { DotPattern } from "./dot-pattern";
 
 export function DotPatternDemo() {
   return (
