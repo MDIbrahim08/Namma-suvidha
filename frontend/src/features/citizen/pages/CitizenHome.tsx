@@ -375,71 +375,44 @@ export default function CitizenHome() {
 
     return (
       <section className="bg-surface font-body-md text-body-md text-on-surface flex flex-col gap-space-md rounded-xl pb-8 antialiased">
-        {/* Minimal Unified Glass Card */}
-        <div className="bg-white/85 backdrop-blur-xl border border-white/90 rounded-2xl p-3 sm:p-4 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex flex-col gap-3">
-          {/* Top: AI Assistant & Voice Input */}
-          <CivicAiChatBar
-            placeholder="Ask Namma AI: 'Find accessible toilets near Indiranagar' or use voice..."
-            onSubmit={handleAiQuery}
-          />
-
-          {/* Integrated Minimal Control Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-            {/* View Switcher */}
-            <div className="inline-flex p-1 bg-slate-100/90 rounded-full text-xs font-semibold text-slate-700">
-              <button
-                type="button"
-                onClick={() => setActiveView('map')}
-                className={`px-3 py-1 rounded-full flex items-center gap-1 transition-all ${activeView === 'map' ? 'bg-[#123C3A] text-white shadow-xs' : 'hover:text-slate-900'}`}
-              >
-                <span className="material-symbols-outlined text-[15px]">map</span>
-                <span>Map</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveView('list')}
-                className={`px-3 py-1 rounded-full flex items-center gap-1 transition-all ${activeView === 'list' ? 'bg-[#123C3A] text-white shadow-xs' : 'hover:text-slate-900'}`}
-              >
-                <span className="material-symbols-outlined text-[15px]">format_list_bulleted</span>
-                <span>List ({filteredToilets.length})</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveView('filters')}
-                className={`px-3 py-1 rounded-full flex items-center gap-1 transition-all ${activeView === 'filters' ? 'bg-[#123C3A] text-white shadow-xs' : 'hover:text-slate-900'}`}
-              >
-                <span className="material-symbols-outlined text-[15px]">tune</span>
-                <span>Filters {activeFilterCount > 0 ? `(${activeFilterCount})` : ''}</span>
-              </button>
-            </div>
-
-            {/* Quick Radius Pills */}
-            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-              {RADIUS_OPTIONS.map((opt) => {
-                const isActive = radiusMeters === opt.meters
-                return (
-                  <button
-                    key={opt.meters}
-                    type="button"
-                    onClick={() => void handleRadiusChange(opt.meters)}
-                    disabled={isBusy}
-                    className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${isActive ? 'bg-emerald-700 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-                  >
-                    {opt.label}
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Live GPS Action Button */}
+        {/* Clean Minimal Controls: Map, List, Filters */}
+        <div className="flex items-center justify-center my-2">
+          <div className="inline-flex p-1 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-slate-700 border border-slate-200/80 shadow-sm">
             <button
               type="button"
-              onClick={() => void handleDetectAndDiscover()}
-              disabled={isBusy}
-              className="px-4 py-1.5 rounded-full bg-[#123C3A] hover:bg-[#003244] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50 ml-auto"
+              onClick={() => setActiveView('map')}
+              className={`px-4 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                activeView === 'map'
+                  ? 'bg-[#123C3A] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
             >
-              <span className="material-symbols-outlined text-[16px]">my_location</span>
-              <span>{isLocating ? 'Detecting…' : userLocation ? 'Refresh GPS' : 'Use My Current Location'}</span>
+              <span className="material-symbols-outlined text-[17px]">map</span>
+              <span>Map</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveView('list')}
+              className={`px-4 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                activeView === 'list'
+                  ? 'bg-[#123C3A] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[17px]">format_list_bulleted</span>
+              <span>List ({filteredToilets.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveView('filters')}
+              className={`px-4 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${
+                activeView === 'filters'
+                  ? 'bg-[#123C3A] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[17px]">tune</span>
+              <span>Filters {activeFilterCount > 0 ? `(${activeFilterCount})` : ''}</span>
             </button>
           </div>
         </div>
