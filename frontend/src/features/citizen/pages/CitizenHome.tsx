@@ -4,8 +4,8 @@ import { getFallbackNearbyToilets } from '../../../lib/api/bbmpFallback'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
 
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
-// import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
-// import { askCivicSuperLLM, type SupportedLanguage } from '../../../lib/api/llm'
+import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
+import { askCivicSuperLLM, type SupportedLanguage } from '../../../lib/api/llm'
 import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
   formatAddress,
@@ -226,11 +226,30 @@ export default function CitizenHome() {
   }, [toilets, searchText, freeOnly, wheelchairOnly, changingTableOnly, publicAccessOnly])
 
 
+  // Handle AI queries from CivicAiChatBar
+  const handleAiQuery = useCallback(
+    async (promptText: string, language: SupportedLanguage): Promise<string> => {
+      return askCivicSuperLLM({
+        prompt: promptText,
+        language,
+        toilets,
+        userLocation,
+        selectedToilet,
+      })
+    },
+    [toilets, userLocation, selectedToilet]
+  )
+
     const activeToilet = selectedToilet ?? filteredToilets[0] ?? null
     const isBusy = isLocating || isFetchingToilets
 
     return (
       <section className="bg-surface font-body-md text-body-md text-on-surface flex flex-col gap-space-md rounded-xl pb-8 antialiased">
+        {/* Multilingual Live AI Chatbot */}
+        <div className="w-full max-w-2xl mx-auto px-2 pt-2">
+          <CivicAiChatBar onSubmit={handleAiQuery} />
+        </div>
+
         {/* Clean Minimal Controls: Map, List, Filters */}
         <div className="flex items-center justify-center my-2">
           <div className="inline-flex p-1 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-slate-700 border border-slate-200/80 shadow-sm">
