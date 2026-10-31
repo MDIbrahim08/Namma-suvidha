@@ -12,17 +12,16 @@ import {
 } from '../../../lib/api/admin'
 import LiquidGlassButton from '../../../components/ui/liquid-glass-button'
 
-const ADMIN_SECRET_KEY = 'namma-admin-secret-key-2026'
+const ADMIN_SECRET_KEY = '06072005'
 const AUTH_STORAGE_KEY = 'namma_suvidha_admin_authenticated'
 
 export default function AdminDashboard() {
-  // Authentication State (Default to authenticated in development for seamless review)
+  // Authentication State (Locked by default: requires password 06072005)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     const stored = localStorage.getItem(AUTH_STORAGE_KEY)
-    if (stored !== null) return stored === 'true'
-    return true
+    return stored === 'true'
   })
-  const [authInputKey, setAuthInputKey] = useState('namma-admin-secret-key-2026')
+  const [authInputKey, setAuthInputKey] = useState('')
   const [authError, setAuthError] = useState<string | null>(null)
 
   // Navigation tab inside Admin: 'overview' | 'audit_logs' | 'analytics'
@@ -163,7 +162,7 @@ export default function AdminDashboard() {
               className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#123C3A]"
             />
             <p className="text-[11px] text-slate-400 mt-1">
-              Dev Key: <code className="text-slate-700">namma-admin-secret-key-2026</code>
+              Dev Key: <code className="text-slate-700">Enter admin password...</code>
             </p>
           </div>
 

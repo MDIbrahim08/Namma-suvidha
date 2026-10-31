@@ -30,9 +30,13 @@ export default function AppShell() {
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-2.5">
           <Link
             to="/"
-            className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2.5 hover:opacity-90 transition-opacity"
           >
-            <span className="material-symbols-outlined text-[24px] text-[#D18B55]">water_drop</span>
+            <img
+              src="/logo.png"
+              alt="Namma Suvidha Logo"
+              className="w-9 h-9 object-contain rounded-full shadow-xs"
+            />
             <span className="text-lg font-bold tracking-tight text-[#123C3A] m-0 p-0">{env.appName}</span>
           </Link>
           <LiquidGlassNavbar items={navItems} />

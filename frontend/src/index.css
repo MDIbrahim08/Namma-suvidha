@@ -357,17 +357,30 @@ body {
 .mo-actor {
   position: relative;
   width: var(--w, 560px);
+  max-width: calc(100vw - 32px);
   height: var(--h, 60px);
   border-radius: var(--r, 999px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (max-width: 640px) {
+  .mo-actor {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 54px;
+    padding: 4px 6px;
+  }
+  .mo-field {
+    font-size: 13.5px !important;
+  }
 }
 
 .mo-actor:focus-within {
@@ -525,4 +538,20 @@ body {
 
 .mo-root[data-phase="answered"] .mo-reset {
   display: block;
+}
+
+/* Glassmorphism Card System */
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
 }

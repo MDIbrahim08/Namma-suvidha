@@ -507,10 +507,37 @@ export default function EvaluatorHome() {
 
       setProfile(newProfile)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newProfile))
+      // Automatically open washroom inspection checklist upon account creation
+      if (suggestedGigs.length > 0) {
+        setActiveAllotment(suggestedGigs[0])
+        setInvigilationModalOpen(true)
+      }
     } else {
-      // 2. Independent Gig Worker: requires Gov ID and uploaded document
-      if (!idDocumentUrl && !documentFileName) {
-        setGigWorkerFormError('Please upload your government ID proof document.')
+      // 2. Independent Gig Worker: requires Email, Face Verification, and Valid Gov ID
+      if (!email || !email.includes('@')) {
+        setGigWorkerFormError('Please provide and verify your email address via Supabase Auth.')
+        return
+      }
+
+      if (!emailVerified) {
+        setGigWorkerFormError('Please confirm the 6-digit verification code sent to your email.')
+        return
+      }
+
+      if (!faceVerified || !faceVerificationPhoto) {
+        setGigWorkerFormError('Please complete live Face Biometric Verification (take a selfie photo).')
+        return
+      }
+
+      if (!idDocumentUrl || !documentFileName) {
+        setGigWorkerFormError('Please upload a valid government ID proof document (PDF or Image).')
+        return
+      }
+
+      // Check for valid document extension
+      const validDocPattern = /\.(pdf|png|jpe?g|webp|heic)$/i
+      if (!validDocPattern.test(documentFileName)) {
+        setGigWorkerFormError('Invalid document format. Please upload a clear photo or PDF of your official ID.')
         return
       }
 
@@ -541,6 +568,11 @@ export default function EvaluatorHome() {
 
       setProfile(newProfile)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newProfile))
+      // Automatically open initial washroom inspection checklist
+      if (suggestedGigs.length > 0) {
+        setActiveAllotment(suggestedGigs[0])
+        setInvigilationModalOpen(true)
+      }
     }
   }
 

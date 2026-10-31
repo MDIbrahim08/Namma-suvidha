@@ -5,7 +5,7 @@ import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.type
 
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
 import MorphOrb from '../../../components/ui/ai-thiking-orb-and-input'
-import { askCivicLLM } from '../../../lib/api/llm'
+import { askCivicSuperLLM } from '../../../lib/api/llm'
 import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
   formatAddress,
@@ -216,11 +216,13 @@ export default function CitizenHome() {
         setRadiusMeters(10000)
       }
 
-      // 2. Detect tag / amenity filters
-      const wantsWheelchair = /wheelchair|accessible|handicap|disab/i.test(queryLower)
+      // 2. Detect tag / amenity filters & user preference styles
+      const wantsWheelchair = /wheelchair|accessible|handicap|disab|physically challenged/i.test(queryLower)
       const wantsFree = /free|no fee|zero fee|without pay/i.test(queryLower)
       const wantsChangingTable = /baby|changing table|infant|diaper/i.test(queryLower)
       const wantsPublic = /public|civic/i.test(queryLower)
+      const wantsWestern = /western|commode|seat|english/i.test(queryLower)
+      const wantsIndian = /indian|squat|desi/i.test(queryLower)
 
       if (wantsWheelchair) setWheelchairOnly(true)
       if (wantsFree) setFreeOnly(true)
@@ -299,24 +301,34 @@ export default function CitizenHome() {
       }
       setActiveView('map')
 
-      // 5. Construct truthful narrative response via LLM + BBMP data grounding
+      // 5. Construct truthful narrative response via Supercharged Civic LLM
       const radiusKm = (targetRadius / 1000).toFixed(targetRadius >= 1000 ? 0 : 1)
       const candidateList = matchingList.length > 0 ? matchingList : foundToilets
 
-      const llmContext = {
+      return await askCivicSuperLLM({
+        userQuery: promptText,
         locationLabel,
         radiusKm,
-        totalFound: candidateList.length,
-        toilets: candidateList.slice(0, 5).map((t) => ({
+        userPreferences: {
+          wantsWestern,
+          wantsIndian,
+          wantsWheelchair,
+          wantsFree,
+          wantsBabyChanging: wantsChangingTable,
+        },
+        facilities: candidateList.map((t) => ({
+          id: t.osm_id,
           name: getDisplayName(t),
           distance: formatDistance(t.distance_meters, t.distance_km),
-          wheelchair: t.tags.wheelchair,
-          fee: t.tags.fee,
-          address: formatAddress(t.address) ?? undefined,
+          distanceMeters: t.distance_meters,
+          address: formatAddress(t.address) ?? 'Bengaluru Public Sanitation Unit',
+          wheelchair: t.tags.wheelchair ?? 'no',
+          fee: t.tags.fee ?? 'no',
+          toiletsType: wantsWestern ? 'Western commode' : wantsIndian ? 'Indian squat style' : 'Multi-stall (Western & Indian)',
+          changingTable: t.tags.changing_table,
+          access: t.tags.access,
         })),
-      }
-
-      return await askCivicLLM(promptText, llmContext)
+      })
     },
     [radiusMeters, userLocation],
   )
