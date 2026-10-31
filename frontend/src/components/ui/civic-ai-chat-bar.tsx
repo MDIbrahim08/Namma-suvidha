@@ -9,7 +9,7 @@ export interface CivicAiChatBarProps {
 const LANGUAGES: { code: SupportedLanguage; label: string; placeholder: string; speechLang: string }[] = [
   { code: 'en', label: 'English', placeholder: "Ask Namma AI: 'Find accessible toilets' or 'Western toilets'…", speechLang: 'en-IN' },
   { code: 'kn', label: 'ಕನ್ನಡ', placeholder: "ನಮ್ಮ AI ಗೆ ಕೇಳಿ: 'ಇಂದಿರಾನಗರ ಹತ್ತಿರ ಶೌಚಾಲಯ ಹುಡುಕಿ'…", speechLang: 'kn-IN' },
-  { code: 'hi', label: 'हिंदी', placeholder: "नम्मा एआई से पूछें: 'इंदिरानगर के पास शौचालय'…", speechLang: 'hi-IN' },
+  { code: 'hi', label: 'हिंदी', placeholder: "ನಮ್ಮ AI: 'इंदिरानगर के पास शौचालय'…", speechLang: 'hi-IN' },
 ]
 
 export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBarProps) {
@@ -17,12 +17,25 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
   const [isLoading, setIsLoading] = useState(false)
   const [response, setResponse] = useState<string | null>(null)
   const [language, setLanguage] = useState<SupportedLanguage>('en')
+  const [langMenuOpen, setLangMenuOpen] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [speechSupported, setSpeechSupported] = useState(true)
 
   const recognitionRef = useRef<any>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const currentLangObj = LANGUAGES.find((l) => l.code === language) || LANGUAGES[0]
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setLangMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   // Setup Web Speech Recognition
   useEffect(() => {
@@ -108,7 +121,7 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
       return
     }
 
-    window.speechSynthesis.cancel() // clear any queue
+    window.speechSynthesis.cancel()
     const cleanText = text.replace(/[*#_~]/g, '')
     const utterance = new SpeechSynthesisUtterance(cleanText)
     utterance.lang = currentLangObj.speechLang
@@ -157,33 +170,54 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
         onSubmit={handleSubmit}
         className="w-full bg-white/95 backdrop-blur-xl border border-white/90 rounded-full px-2 sm:px-3 py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.06)] flex items-center gap-1.5 sm:gap-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#006398]/50 focus-within:border-white"
       >
-        {/* Inline Language Dropdown Pill */}
-        <div className="relative flex items-center">
-          <div className="flex items-center gap-1 bg-slate-100/90 hover:bg-slate-200 text-slate-800 px-2 py-1 rounded-full text-xs font-bold cursor-pointer transition-colors border border-slate-200/80">
+        {/* Custom Language Dropdown Pill */}
+        <div ref={dropdownRef} className="relative flex-shrink-0">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              setLangMenuOpen(!langMenuOpen)
+            }}
+            className="flex items-center gap-1 bg-slate-100/90 hover:bg-slate-200 text-slate-800 px-2.5 py-1 rounded-full text-xs font-bold transition-all border border-slate-200/80 active:scale-95"
+            aria-expanded={langMenuOpen}
+            aria-label="Select Language"
+          >
             <span className="material-symbols-outlined text-[15px] text-slate-600">translate</span>
-            <select
-              value={language}
-              onChange={(e) => {
-                const newLang = e.target.value as SupportedLanguage
-                setLanguage(newLang)
-                if (isSpeaking) {
-                  window.speechSynthesis.cancel()
-                  setIsSpeaking(false)
-                }
-              }}
-              className="bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer pr-1 appearance-none"
-              title="Select Language"
-            >
-              {LANGUAGES.map((l) => (
-                <option key={l.code} value={l.code} className="text-slate-900 font-semibold">
-                  {l.label}
-                </option>
-              ))}
-            </select>
-            <span className="material-symbols-outlined text-[13px] text-slate-500 pointer-events-none -ml-0.5">
-              expand_more
+            <span>{currentLangObj.label}</span>
+            <span className="material-symbols-outlined text-[14px] text-slate-500">
+              {langMenuOpen ? 'expand_less' : 'expand_more'}
             </span>
-          </div>
+          </button>
+
+          {/* Dropdown Menu Popover */}
+          {langMenuOpen && (
+            <div className="absolute top-full left-0 mt-1.5 z-50 bg-white border border-slate-200 rounded-xl shadow-xl py-1 w-32 animate-in fade-in zoom-in-95 duration-150">
+              {LANGUAGES.map((l) => (
+                <button
+                  key={l.code}
+                  type="button"
+                  onClick={() => {
+                    setLanguage(l.code)
+                    setLangMenuOpen(false)
+                    if (isSpeaking) {
+                      window.speechSynthesis.cancel()
+                      setIsSpeaking(false)
+                    }
+                  }}
+                  className={`w-full text-left px-3 py-1.5 text-xs font-semibold flex items-center justify-between transition-colors ${
+                    language === l.code
+                      ? 'bg-emerald-50 text-emerald-800 font-bold'
+                      : 'text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <span>{l.label}</span>
+                  {language === l.code && (
+                    <span className="material-symbols-outlined text-sm text-emerald-600">check</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Input Text Field */}
@@ -242,7 +276,7 @@ export default function CivicAiChatBar({ onSubmit, placeholder }: CivicAiChatBar
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-bold text-[#006398] uppercase tracking-wider">
-                {language === 'kn' ? 'ನಮ್ಮ ಸುವಿಧಾ AI ಪ್ರತಿಕ್ರಿಯೆ' : language === 'hi' ? 'नम्मा सुविधा AI प्रतिक्रिया' : 'Namma Suvidha AI Response'}
+                {language === 'kn' ? 'ನಮ್ಮ ಸುವಿಧಾ AI ಪ್ರತಿಕ್ರಿಯೆ' : language === 'hi' ? 'ನಮ್ಮ AI प्रतिक्रिया' : 'Namma Suvidha AI Response'}
               </span>
             </div>
 
