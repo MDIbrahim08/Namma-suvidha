@@ -808,13 +808,13 @@ export default function CitizenHome() {
                 {/* Action Row */}
                 <div className="flex flex-wrap items-center gap-space-sm pt-1">
                   <a
-                    href={`https://www.openstreetmap.org/${activeToilet.osm_type}/${activeToilet.osm_id}`}
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${activeToilet.latitude},${activeToilet.longitude}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 min-w-[200px] h-11 bg-primary-container text-primary-fixed hover:bg-primary transition-all rounded-full flex items-center justify-center gap-2 shadow-md font-label-lg text-label-lg uppercase"
+                    className="flex-1 min-w-[200px] h-11 bg-[#123C3A] text-white hover:bg-[#003244] transition-all rounded-full flex items-center justify-center gap-2 shadow-md font-label-lg text-label-lg uppercase tracking-wide"
                   >
-                    <span className="material-symbols-outlined text-[20px]">open_in_new</span>
-                    <span>View on OpenStreetMap</span>
+                    <span className="material-symbols-outlined text-[20px]">directions</span>
+                    <span>Get Directions on Google Maps</span>
                   </a>
                   <button
                     type="button"
