@@ -355,13 +355,31 @@ export default function EvaluatorHome() {
   }
 
   const handleVerifyEmailOtp = async () => {
+    if (!emailOtp || emailOtp.trim().length < 6) {
+      setEmailAuthError('Please enter the 6-digit confirmation code sent to your email.')
+      return
+    }
     setEmailOtpVerifying(true)
     setEmailAuthError(null)
-    setTimeout(() => {
-      setEmailVerified(true)
-      setEmailOtpSuccess(true)
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: emailOtp.trim(),
+        type: 'email',
+      })
+      if (error) {
+        setEmailAuthError(error.message)
+      } else if (data?.session || data?.user) {
+        setEmailVerified(true)
+        setEmailOtpSuccess(true)
+      } else {
+        setEmailAuthError('Invalid code. Please check your email and try again.')
+      }
+    } catch (err: any) {
+      setEmailAuthError(err.message || 'Verification failed. Please check your OTP.')
+    } finally {
       setEmailOtpVerifying(false)
-    }, 300)
+    }
   }
 
   // Live Camera Face Verification Handlers
