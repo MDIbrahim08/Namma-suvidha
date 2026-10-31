@@ -169,3 +169,75 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Liquid Glass / Waterline Button Design System Helpers */
+.liquid-glass-sheen {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(255, 255, 255, 0) 60%
+  );
+}
+
+.liquid-glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 4px 16px 0 rgba(18, 60, 58, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* MorphOrb AI Thinking Orb Animations & Classes */
+@keyframes mo-pulse-glow {
+  0%, 100% {
+    transform: scale(0.95);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.65;
+  }
+}
+
+@keyframes mo-card-unfold-anim {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mo-orb-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mo-orb-canvas {
+  filter: drop-shadow(0 4px 16px rgba(18, 60, 58, 0.25));
+  border-radius: 9999px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.mo-orb-glow {
+  animation: mo-pulse-glow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.mo-card-unfold {
+  animation: mo-card-unfold-anim 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mo-orb-glow {
+    animation: none;
+    opacity: 0.4;
+  }
+  .mo-card-unfold {
+    animation: none;
+  }
+}

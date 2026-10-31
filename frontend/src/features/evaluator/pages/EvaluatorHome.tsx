@@ -112,7 +112,7 @@ export default function EvaluatorHome() {
 
   // Active Volunteer Dashboard State
   const [nearbyToilets, setNearbyToilets] = useState<NearbyToilet[]>([])
-  const [isLoadingToilets, setIsLoadingToilets] = useState(false)
+  const [, setIsLoadingToilets] = useState(false)
   const [inspections, setInspections] = useState<InspectionRecord[]>([])
 
   // Live Invigilation Gigs Allotment
@@ -126,7 +126,7 @@ export default function EvaluatorHome() {
   const [soapStatus, setSoapStatus] = useState('Available')
   const [odourStatus, setOdourStatus] = useState('Clean & Fresh')
   const [floorStatus, setFloorStatus] = useState('Dry & Clean')
-  const [lightingStatus, setLightingStatus] = useState('Fully Functional')
+  const [lightingStatus] = useState('Fully Functional')
   const [inspectionPhotoUrl, setInspectionPhotoUrl] = useState('')
   const [isSubmittingAudit, setIsSubmittingAudit] = useState(false)
   const [auditSuccessMsg, setAuditSuccessMsg] = useState<string | null>(null)
@@ -262,31 +262,31 @@ export default function EvaluatorHome() {
       const status: 'dirty_critical' | 'needs_attention' | 'routine' = isCritical
         ? 'dirty_critical'
         : isAttention
-        ? 'needs_attention'
-        : 'routine'
+          ? 'needs_attention'
+          : 'routine'
 
       const reward = status === 'dirty_critical' ? 250 : status === 'needs_attention' ? 180 : 120
       const label =
         status === 'dirty_critical'
           ? 'Critical Dirty Alert (Urgent Invigilation)'
           : status === 'needs_attention'
-          ? 'Attention Required (Hygiene Decay Alert)'
-          : 'Standard Quality Invigilation Audit'
+            ? 'Attention Required (Hygiene Decay Alert)'
+            : 'Standard Quality Invigilation Audit'
 
       const summary =
         status === 'dirty_critical'
           ? 'Citizens reported severe odour, unflushed pans, and water blockage. Immediate invigilation required for BBMP contractor penalty.'
           : status === 'needs_attention'
-          ? 'Reported soap dispenser empty and wet slippery floor.'
-          : 'Scheduled municipal routine inspection to maintain baseline hygiene score.'
+            ? 'Reported soap dispenser empty and wet slippery floor.'
+            : 'Scheduled municipal routine inspection to maintain baseline hygiene score.'
 
       return {
         id: `GIG-BLR-${1000 + idx}`,
-        toiletId: String(t.id),
+        toiletId: String(t.osm_id),
         toiletName: t.name || 'BBMP Public Washroom',
         address: safeAddressString(t.address),
-        ward: (typeof t.ward === 'string' || typeof t.ward === 'number') ? String(t.ward) : (t.tags?.suburb || 'Central'),
-        zone: (typeof t.zone === 'string') ? t.zone : (t.tags?.district || 'Central Zone'),
+        ward: (t.tags?.suburb || 'Central'),
+        zone: (t.tags?.district || 'Central Zone'),
         hygieneStatus: status,
         urgencyLabel: label,
         complaintSummary: summary,
@@ -503,7 +503,7 @@ export default function EvaluatorHome() {
             </div>
 
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
-              Volunteer Sanitation Invigilation Portal
+              Evaluator
             </h1>
             <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
               Verify volunteer credentials and allocate on-site cleaning invigilation audits for Bengaluru public washrooms.
@@ -520,9 +520,9 @@ export default function EvaluatorHome() {
               <button
                 onClick={captureRealtimeGPS}
                 disabled={isLocating}
-                className="text-xs text-blue-400 hover:text-blue-300 font-medium"
+                className="text-xs text-blue-400 hover:text-white font-medium"
               >
-                {isLocating ? 'Locating...' : 'Refresh'}
+                {isLocating ? 'Locating...' : 'Refresh GPS'}
               </button>
             </div>
             {gpsCoords ? (
@@ -545,255 +545,253 @@ export default function EvaluatorHome() {
         /* ================= ROLE-SELECTION & ROLE-SPECIFIC VERIFICATION FLOW ================= */
         <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
           <form onSubmit={handleRegistrationSubmit} className="space-y-6">
-              {/* ================= STEP 1: ROLE SELECTION (FIRST SCREEN) ================= */}
-              <div>
-                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2.5">
-                  Select Your Volunteer Role *
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {/* Role Option 1: Infosys CSR Volunteer */}
-                  <div
-                    onClick={() => {
-                      setSelectedRole('infosys_csr')
-                      setRosterError(null)
-                      setGigWorkerFormError(null)
-                    }}
-                    className={`cursor-pointer rounded-xl border-2 p-4 transition-all flex flex-col justify-between ${
-                      selectedRole === 'infosys_csr'
-                        ? 'border-blue-600 bg-blue-50/30 ring-2 ring-blue-600/10'
-                        : 'border-slate-200 hover:border-slate-300 bg-white'
+            {/* ================= STEP 1: ROLE SELECTION (FIRST SCREEN) ================= */}
+            <div>
+              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2.5">
+                Select Your Volunteer Role *
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Role Option 1: Infosys CSR Volunteer */}
+                <div
+                  onClick={() => {
+                    setSelectedRole('infosys_csr')
+                    setRosterError(null)
+                    setGigWorkerFormError(null)
+                  }}
+                  className={`cursor-pointer rounded-xl border-2 p-4 transition-all flex flex-col justify-between ${selectedRole === 'infosys_csr'
+                      ? 'border-blue-600 bg-blue-50/30 ring-2 ring-blue-600/10'
+                      : 'border-slate-200 hover:border-slate-300 bg-white'
                     }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="material-symbols-outlined text-2xl text-blue-600">domain</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
-                          Instant Verification
-                        </span>
-                      </div>
-                      <h4 className="font-bold text-sm text-slate-900">Infosys CSR Volunteer</h4>
-                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                        Authorized Infosys CSR members verified instantly against the live roster.
-                      </p>
-                    </div>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600">
-                      <span className="material-symbols-outlined text-sm">
-                        {selectedRole === 'infosys_csr' ? 'check_circle' : 'radio_button_unchecked'}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="material-symbols-outlined text-2xl text-blue-600">domain</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                        Instant Verification
                       </span>
-                      <span>{selectedRole === 'infosys_csr' ? 'Selected' : 'Select'}</span>
                     </div>
+                    <h4 className="font-bold text-sm text-slate-900">Infosys CSR Volunteer</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Authorized Infosys CSR members verified instantly against the live roster.
+                    </p>
                   </div>
+                  <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-blue-600">
+                    <span className="material-symbols-outlined text-sm">
+                      {selectedRole === 'infosys_csr' ? 'check_circle' : 'radio_button_unchecked'}
+                    </span>
+                    <span>{selectedRole === 'infosys_csr' ? 'Selected' : 'Select'}</span>
+                  </div>
+                </div>
 
-                  {/* Role Option 2: Independent Gig Worker */}
-                  <div
-                    onClick={() => {
-                      setSelectedRole('independent_gig')
-                      setRosterError(null)
-                      setGigWorkerFormError(null)
-                    }}
-                    className={`cursor-pointer rounded-xl border-2 p-4 transition-all flex flex-col justify-between ${
-                      selectedRole === 'independent_gig'
-                        ? 'border-blue-600 bg-blue-50/30 ring-2 ring-blue-600/10'
-                        : 'border-slate-200 hover:border-slate-300 bg-white'
+                {/* Role Option 2: Independent Gig Worker */}
+                <div
+                  onClick={() => {
+                    setSelectedRole('independent_gig')
+                    setRosterError(null)
+                    setGigWorkerFormError(null)
+                  }}
+                  className={`cursor-pointer rounded-xl border-2 p-4 transition-all flex flex-col justify-between ${selectedRole === 'independent_gig'
+                      ? 'border-blue-600 bg-blue-50/30 ring-2 ring-blue-600/10'
+                      : 'border-slate-200 hover:border-slate-300 bg-white'
                     }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="material-symbols-outlined text-2xl text-slate-700">badge</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
-                          Admin Review
-                        </span>
-                      </div>
-                      <h4 className="font-bold text-sm text-slate-900">Independent Gig Worker</h4>
-                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                        Civic citizens and gig workers. Requires government ID upload and admin approval.
-                      </p>
-                    </div>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-slate-600">
-                      <span className="material-symbols-outlined text-sm">
-                        {selectedRole === 'independent_gig' ? 'check_circle' : 'radio_button_unchecked'}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="material-symbols-outlined text-2xl text-slate-700">badge</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+                        Admin Review
                       </span>
-                      <span>{selectedRole === 'independent_gig' ? 'Selected' : 'Select'}</span>
                     </div>
+                    <h4 className="font-bold text-sm text-slate-900">Independent Gig Worker</h4>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Civic citizens and gig workers. Requires government ID upload and admin approval.
+                    </p>
+                  </div>
+                  <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-slate-600">
+                    <span className="material-symbols-outlined text-sm">
+                      {selectedRole === 'independent_gig' ? 'check_circle' : 'radio_button_unchecked'}
+                    </span>
+                    <span>{selectedRole === 'independent_gig' ? 'Selected' : 'Select'}</span>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* ================= STEP 2: IF INFOSYS CSR VOLUNTEER IS SELECTED ================= */}
-              {selectedRole === 'infosys_csr' && (
-                <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/20 space-y-4">
-                  <div className="flex items-center gap-2 pb-2 border-b border-blue-200">
-                    <span className="material-symbols-outlined text-blue-600 text-base">verified</span>
-                    <h5 className="text-xs font-bold text-blue-900 uppercase tracking-wider">
-                      Infosys CSR Volunteer Details
-                    </h5>
-                  </div>
+            {/* ================= STEP 2: IF INFOSYS CSR VOLUNTEER IS SELECTED ================= */}
+            {selectedRole === 'infosys_csr' && (
+              <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/20 space-y-4">
+                <div className="flex items-center gap-2 pb-2 border-b border-blue-200">
+                  <span className="material-symbols-outlined text-blue-600 text-base">verified</span>
+                  <h5 className="text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    Infosys CSR Volunteer Details
+                  </h5>
+                </div>
 
-                  {/* Full Name & Mobile Number */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="e.g. Ananya Sharma"
-                        className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Mobile Number *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="+91 98450 12345"
-                        className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Unique Infosys CSR Volunteer ID */}
+                {/* Full Name & Mobile Number */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Unique Infosys CSR Volunteer ID *
+                      Full Name *
                     </label>
                     <input
                       type="text"
                       required
-                      value={infosysVolunteerId}
-                      onChange={(e) => {
-                        setInfosysVolunteerId(e.target.value)
-                        setRosterError(null)
-                      }}
-                      placeholder="e.g. INF-CSR-2026-101"
-                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white font-mono uppercase focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    />
-                    <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
-                      <span>Verified live against the authorized roster.</span>
-                      <span className="text-blue-600 font-mono">Demo: INF-CSR-2026-101, INF-CSR-2026-102</span>
-                    </div>
-                  </div>
-
-                  {rosterError && (
-                    <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 flex items-start gap-2">
-                      <span className="material-symbols-outlined text-base flex-shrink-0 text-red-600">error</span>
-                      <span>{rosterError}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* ================= STEP 3: IF INDEPENDENT GIG WORKER IS SELECTED ================= */}
-              {selectedRole === 'independent_gig' && (
-                <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-4">
-                  <div className="flex items-center gap-2 pb-2 border-b border-slate-200">
-                    <span className="material-symbols-outlined text-slate-700 text-base">assignment_ind</span>
-                    <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                      Independent Gig Worker KYC Details
-                    </h5>
-                  </div>
-
-                  {/* Full Name & Mobile Number */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="e.g. Ramesh Gowda"
-                        className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Mobile Number *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="+91 96068 36524"
-                        className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Government ID Type */}
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Government ID Type *
-                    </label>
-                    <select
-                      value={idType}
-                      onChange={(e) => setIdType(e.target.value)}
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="e.g. Ananya Sharma"
                       className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    >
-                      <option value="Aadhaar">Aadhaar</option>
-                      <option value="Voter ID">Voter ID</option>
-                      <option value="Driving Licence">Driving Licence</option>
-                      <option value="Passport">Passport</option>
-                    </select>
+                    />
                   </div>
 
-                  {/* Government ID Document Upload */}
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Government ID Document Upload *
+                      Mobile Number *
                     </label>
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="file"
-                        accept="image/*,.pdf"
-                        required
-                        onChange={handleDocumentFileChange}
-                        className="text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
-                      />
-                      {documentFileName && (
-                        <span className="text-xs text-emerald-700 font-medium truncate">
-                          ✓ {documentFileName}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      Upload scanned copy or clear photo. Status will be marked <strong>Pending</strong> until admin approval.
-                    </p>
+                    <input
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+91 98450 12345"
+                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    />
+                  </div>
+                </div>
+
+                {/* Unique Infosys CSR Volunteer ID */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Unique Infosys CSR Volunteer ID *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={infosysVolunteerId}
+                    onChange={(e) => {
+                      setInfosysVolunteerId(e.target.value)
+                      setRosterError(null)
+                    }}
+                    placeholder="e.g. INF-CSR-2026-101"
+                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white font-mono uppercase focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                  <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>Verified live against the authorized roster.</span>
+                    <span className="text-blue-600 font-mono">Demo: INF-CSR-2026-101, INF-CSR-2026-102</span>
+                  </div>
+                </div>
+
+                {rosterError && (
+                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 flex items-start gap-2">
+                    <span className="material-symbols-outlined text-base flex-shrink-0 text-red-600">error</span>
+                    <span>{rosterError}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ================= STEP 3: IF INDEPENDENT GIG WORKER IS SELECTED ================= */}
+            {selectedRole === 'independent_gig' && (
+              <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-4">
+                <div className="flex items-center gap-2 pb-2 border-b border-slate-200">
+                  <span className="material-symbols-outlined text-slate-700 text-base">assignment_ind</span>
+                  <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                    Independent Gig Worker KYC Details
+                  </h5>
+                </div>
+
+                {/* Full Name & Mobile Number */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="e.g. Ramesh Gowda"
+                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    />
                   </div>
 
-                  {gigWorkerFormError && (
-                    <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">
-                      {gigWorkerFormError}
-                    </div>
-                  )}
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Mobile Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+91 96068 36524"
+                      className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    />
+                  </div>
                 </div>
-              )}
 
-              {/* Submit Action */}
-              <button
-                type="submit"
-                className="w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all shadow-sm flex items-center justify-center gap-2"
-              >
-                <span className="material-symbols-outlined text-lg">verified_user</span>
-                {selectedRole === 'infosys_csr'
-                  ? 'Verify Against Infosys CSR Roster'
-                  : 'Submit for Admin Verification'}
-              </button>
-            </form>
-          </div>
-        ) : (
+                {/* Government ID Type */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Government ID Type *
+                  </label>
+                  <select
+                    value={idType}
+                    onChange={(e) => setIdType(e.target.value)}
+                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  >
+                    <option value="Aadhaar">Aadhaar</option>
+                    <option value="Voter ID">Voter ID</option>
+                    <option value="Driving Licence">Driving Licence</option>
+                    <option value="Passport">Passport</option>
+                  </select>
+                </div>
+
+                {/* Government ID Document Upload */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Government ID Document Upload *
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      required
+                      onChange={handleDocumentFileChange}
+                      className="text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+                    />
+                    {documentFileName && (
+                      <span className="text-xs text-emerald-700 font-medium truncate">
+                        ✓ {documentFileName}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Upload scanned copy or clear photo. Status will be marked <strong>Pending</strong> until admin approval.
+                  </p>
+                </div>
+
+                {gigWorkerFormError && (
+                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">
+                    {gigWorkerFormError}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Submit Action */}
+            <button
+              type="submit"
+              className="w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all shadow-sm flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-lg">verified_user</span>
+              {selectedRole === 'infosys_csr'
+                ? 'Verify Against Infosys CSR Roster'
+                : 'Submit for Admin Verification'}
+            </button>
+          </form>
+        </div>
+      ) : (
         /* ================= SHARED INSPECTOR DASHBOARD FOR BOTH ROLES ================= */
         <div className="space-y-8">
           {/* Volunteer Executive Profile Card */}
@@ -911,21 +909,19 @@ export default function EvaluatorHome() {
               <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium">
                 <button
                   onClick={() => setActiveTab('dirty_gigs')}
-                  className={`px-3 py-1.5 rounded-lg transition-all ${
-                    activeTab === 'dirty_gigs'
+                  className={`px-3 py-1.5 rounded-lg transition-all ${activeTab === 'dirty_gigs'
                       ? 'bg-white text-blue-700 font-bold shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                    }`}
                 >
                   🚨 Unhygienic / Flagged ({suggestedGigs.length})
                 </button>
                 <button
                   onClick={() => setActiveTab('all_washrooms')}
-                  className={`px-3 py-1.5 rounded-lg transition-all ${
-                    activeTab === 'all_washrooms'
+                  className={`px-3 py-1.5 rounded-lg transition-all ${activeTab === 'all_washrooms'
                       ? 'bg-white text-blue-700 font-bold shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                    }`}
                 >
                   All BBMP ({nearbyToilets.length})
                 </button>
@@ -942,25 +938,23 @@ export default function EvaluatorHome() {
                   return (
                     <div
                       key={gig.id}
-                      className={`rounded-2xl border p-5 flex flex-col justify-between shadow-xs transition-all ${
-                        isCritical
+                      className={`rounded-2xl border p-5 flex flex-col justify-between shadow-xs transition-all ${isCritical
                           ? 'border-red-200 bg-red-50/20 hover:border-red-400'
                           : isAttention
-                          ? 'border-amber-200 bg-amber-50/20 hover:border-amber-400'
-                          : 'border-slate-200 bg-white hover:border-blue-400'
-                      }`}
+                            ? 'border-amber-200 bg-amber-50/20 hover:border-amber-400'
+                            : 'border-slate-200 bg-white hover:border-blue-400'
+                        }`}
                     >
                       <div className="space-y-3">
                         {/* Header: Urgency & Pay */}
                         <div className="flex items-start justify-between gap-2">
                           <span
-                            className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-md border ${
-                              isCritical
+                            className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-md border ${isCritical
                                 ? 'bg-red-100 text-red-800 border-red-200'
                                 : isAttention
-                                ? 'bg-amber-100 text-amber-800 border-amber-200'
-                                : 'bg-slate-100 text-slate-800 border-slate-200'
-                            }`}
+                                  ? 'bg-amber-100 text-amber-800 border-amber-200'
+                                  : 'bg-slate-100 text-slate-800 border-slate-200'
+                              }`}
                           >
                             <span className="material-symbols-outlined text-xs">
                               {isCritical ? 'warning' : isAttention ? 'info' : 'checklist'}
@@ -1004,11 +998,10 @@ export default function EvaluatorHome() {
 
                         <button
                           onClick={() => claimGig(gig)}
-                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 ${
-                            isCritical
+                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 ${isCritical
                               ? 'bg-red-600 hover:bg-red-700 text-white'
                               : 'bg-blue-600 hover:bg-blue-700 text-white'
-                          }`}
+                            }`}
                         >
                           <span className="material-symbols-outlined text-sm">assignment_turned_in</span>
                           Claim Invigilation Gig (₹{gig.rewardAmount})
@@ -1023,7 +1016,7 @@ export default function EvaluatorHome() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {nearbyToilets.slice(0, 9).map((t, idx) => (
                   <div
-                    key={t.id}
+                    key={t.osm_id}
                     className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex flex-col justify-between hover:border-blue-400 transition-all"
                   >
                     <div>
@@ -1037,19 +1030,19 @@ export default function EvaluatorHome() {
                       </div>
                       <p className="text-xs text-slate-500 mb-2">{safeAddressString(t.address)}</p>
                       <p className="text-[11px] text-slate-400">
-                        Ward: {(typeof t.ward === 'string' || typeof t.ward === 'number') ? String(t.ward) : (t.tags?.suburb || 'Central')} · Zone: {(typeof t.zone === 'string') ? t.zone : (t.tags?.district || 'Central')}
+                        Ward: {(t.tags?.suburb || 'Central')} · Zone: {(t.tags?.district || 'Central')}
                       </p>
                     </div>
 
                     <button
                       onClick={() =>
                         claimGig({
-                          id: `GIG-ROUTINE-${t.id}`,
-                          toiletId: String(t.id),
+                          id: `GIG-ROUTINE-${t.osm_id}`,
+                          toiletId: String(t.osm_id),
                           toiletName: t.name || 'BBMP Washroom',
                           address: safeAddressString(t.address),
-                          ward: (typeof t.ward === 'string' || typeof t.ward === 'number') ? String(t.ward) : (t.tags?.suburb || 'Central'),
-                          zone: (typeof t.zone === 'string') ? t.zone : (t.tags?.district || 'Central'),
+                          ward: (t.tags?.suburb || 'Central'),
+                          zone: (t.tags?.district || 'Central'),
                           hygieneStatus: 'routine',
                           urgencyLabel: 'Routine Audit',
                           complaintSummary: 'Standard scheduled sanitation audit.',
@@ -1201,11 +1194,10 @@ export default function EvaluatorHome() {
                         type="button"
                         key={opt}
                         onClick={() => setWaterStatus(opt)}
-                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${
-                          waterStatus === opt
+                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${waterStatus === opt
                             ? 'border-blue-600 bg-blue-50 text-blue-800'
                             : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         {opt}
                       </button>
@@ -1224,11 +1216,10 @@ export default function EvaluatorHome() {
                         type="button"
                         key={opt}
                         onClick={() => setSoapStatus(opt)}
-                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${
-                          soapStatus === opt
+                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${soapStatus === opt
                             ? 'border-blue-600 bg-blue-50 text-blue-800'
                             : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         {opt}
                       </button>
@@ -1247,11 +1238,10 @@ export default function EvaluatorHome() {
                         type="button"
                         key={opt}
                         onClick={() => setOdourStatus(opt)}
-                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${
-                          odourStatus === opt
+                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${odourStatus === opt
                             ? 'border-blue-600 bg-blue-50 text-blue-800'
                             : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         {opt}
                       </button>
@@ -1270,11 +1260,10 @@ export default function EvaluatorHome() {
                         type="button"
                         key={opt}
                         onClick={() => setFloorStatus(opt)}
-                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${
-                          floorStatus === opt
+                        className={`py-2 px-2 rounded-lg border font-medium transition-colors ${floorStatus === opt
                             ? 'border-blue-600 bg-blue-50 text-blue-800'
                             : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         {opt}
                       </button>

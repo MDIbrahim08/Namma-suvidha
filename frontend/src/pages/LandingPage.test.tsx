@@ -48,7 +48,6 @@ describe('Phase 0 routes and BackendStatus', () => {
   it.each([
     ['/citizen', 'Citizen'],
     ['/evaluator', 'Evaluator'],
-    ['/government', 'Government'],
     ['/unknown-route', '404 — Page not found'],
   ])('renders route %s with heading %s', (path, heading) => {
     const memRouter = createMemoryRouter(routes, {

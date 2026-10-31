@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import BackendStatus from '../components/status/BackendStatus'
+import LiquidGlassButton from '../components/ui/liquid-glass-button'
 import { env } from '../config/env'
 
 const modules = [
@@ -53,8 +54,8 @@ export default function LandingPage() {
       <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl font-bold tracking-tight text-teal-800">{env.appName}</span>
-            <span className="rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-semibold text-teal-800">
+            <h1 className="text-2xl font-bold tracking-tight text-[#123C3A]">{env.appName}</h1>
+            <span className="rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-semibold text-[#123C3A]">
               Bengaluru MVP
             </span>
           </div>
@@ -62,14 +63,15 @@ export default function LandingPage() {
             AI-assisted public washroom discovery, WebAuthn gig verification, and BBMP municipal hygiene monitoring.
           </p>
         </div>
-        <button
+        <LiquidGlassButton
+          variant="secondary"
+          size="sm"
           onClick={replaySplash}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
+          icon={<span className="material-symbols-outlined text-sm">play_circle</span>}
           title="Replay opening logo reveal video"
         >
-          <span className="material-symbols-outlined text-sm">play_circle</span>
           Replay Logo Reveal
-        </button>
+        </LiquidGlassButton>
       </header>
 
       {/* Main Portals Grid */}
@@ -91,12 +93,12 @@ export default function LandingPage() {
                     {m.badge}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#123C3A] transition-colors">
                   {m.title}
                 </h3>
                 <p className="mt-2 text-sm text-slate-600 leading-relaxed">{m.text}</p>
               </div>
-              <div className="mt-6 flex items-center gap-1 text-sm font-semibold text-teal-700">
+              <div className="mt-6 flex items-center gap-1 text-sm font-semibold text-[#123C3A]">
                 Launch Portal
                 <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">
                   arrow_forward

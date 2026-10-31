@@ -12,7 +12,7 @@ export const routes = [
     element: <AppShell />,
     errorElement: <ErrorBoundary />,
     children: [
-      { path: '/', element: <CitizenHome /> },
+      { path: '/', element: <LandingPage /> },
       { path: '/citizen', element: <CitizenHome /> },
       { path: '/evaluator', element: <EvaluatorHome /> },
       { path: '/admin', element: <AdminDashboard /> },

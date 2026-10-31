@@ -7,8 +7,16 @@ interface LogoSplashProps {
 export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
   const [isVisible, setIsVisible] = useState(true)
   const [isFading, setIsFading] = useState(false)
-  const [useSvgFallback, setUseSvgFallback] = useState(false)
+  const [useSvgFallback] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const hasDismissedRef = useRef(false)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.setAttribute('muted', '')
+      videoRef.current.muted = true
+    }
+  }, [isVisible, useSvgFallback])
 
   const handleDismiss = () => {
     if (hasDismissedRef.current) return
@@ -22,10 +30,16 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
   }
 
   useEffect(() => {
-    // 6-second total safety fallback
+    // Check prefers-reduced-motion
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      handleDismiss()
+      return
+    }
+
+    // 5.5-second total safety fallback
     const timer = setTimeout(() => {
       handleDismiss()
-    }, 6000)
+    }, 5500)
 
     return () => clearTimeout(timer)
   }, [])
@@ -42,13 +56,14 @@ export const LogoSplash: React.FC<LogoSplashProps> = ({ onFinish }) => {
     >
       {!useSvgFallback ? (
         <video
+          ref={videoRef}
           src="/logo-reveal.mp4"
           autoPlay
           muted
           playsInline
           preload="auto"
           onEnded={handleDismiss}
-          onError={() => setUseSvgFallback(true)}
+          onError={handleDismiss}
           className="w-full max-w-2xl h-auto aspect-video object-contain"
         />
       ) : (

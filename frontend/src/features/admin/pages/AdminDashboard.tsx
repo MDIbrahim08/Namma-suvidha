@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   fetchAdminSummary,
   fetchAuditLogs,
@@ -9,10 +9,8 @@ import {
   type AdminDashboardSummary,
   type PlatformAuditEvent,
   type FeedbackAnalytics,
-  type FacilityAnalytics,
-  type InspectionAnalytics,
-  type GovernmentResponseAnalytics,
 } from '../../../lib/api/admin'
+import LiquidGlassButton from '../../../components/ui/liquid-glass-button'
 
 const ADMIN_SECRET_KEY = 'namma-admin-secret-key-2026'
 const AUTH_STORAGE_KEY = 'namma_suvidha_admin_authenticated'
@@ -46,78 +44,71 @@ export default function AdminDashboard() {
   const [filterSeverity, setFilterSeverity] = useState<string>('all')
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState<string>('')
-  const [currentPage, setCurrentPage] = useState<number>(1)
-
-  // Analytics Datasets
+  // Analytics State
   const [feedbackData, setFeedbackData] = useState<FeedbackAnalytics | null>(null)
-  const [facilityData, setFacilityData] = useState<FacilityAnalytics | null>(null)
-  const [inspectionData, setInspectionData] = useState<InspectionAnalytics | null>(null)
-  const [govResponseData, setGovResponseData] = useState<GovernmentResponseAnalytics | null>(null)
 
-  // Handle Admin Passkey / Key Login
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    if (authInputKey.trim() === ADMIN_SECRET_KEY || authInputKey.trim() === 'admin') {
-      localStorage.setItem(AUTH_STORAGE_KEY, 'true')
+    if (authInputKey.trim() === ADMIN_SECRET_KEY) {
       setIsAuthenticated(true)
+      localStorage.setItem(AUTH_STORAGE_KEY, 'true')
       setAuthError(null)
     } else {
-      setAuthError('Invalid Admin Key. Administrator privilege required.')
+      setAuthError('Invalid administrator credentials. Access restricted.')
     }
   }
 
   const handleAdminLogout = () => {
-    localStorage.removeItem(AUTH_STORAGE_KEY)
     setIsAuthenticated(false)
+    localStorage.removeItem(AUTH_STORAGE_KEY)
   }
 
-  // Load Summary
+  // Fetch summary
   const loadSummaryData = useCallback(async () => {
     setIsLoadingSummary(true)
     try {
-      const data = await fetchAdminSummary(ADMIN_SECRET_KEY)
+      const data = await fetchAdminSummary()
       setSummary(data)
+    } catch (e) {
+      console.warn('Could not load admin summary', e)
     } finally {
       setIsLoadingSummary(false)
     }
   }, [])
 
-  // Load Audit Logs
+  // Fetch audit logs
   const loadAuditLogsData = useCallback(async () => {
     setIsLoadingLogs(true)
     try {
-      const res = await fetchAuditLogs(
-        {
-          event_type: filterType !== 'all' ? filterType : undefined,
-          severity: filterSeverity !== 'all' ? filterSeverity : undefined,
-          status: filterStatus !== 'all' ? filterStatus : undefined,
-          search: searchQuery.trim() || undefined,
-          page: currentPage,
-          page_size: 20,
-        },
-        ADMIN_SECRET_KEY,
-      )
+      const params = {
+        page_size: 50,
+        ...(filterType !== 'all' ? { event_type: filterType } : {}),
+        ...(filterSeverity !== 'all' ? { severity: filterSeverity } : {}),
+        ...(filterStatus !== 'all' ? { status: filterStatus } : {}),
+        ...(searchQuery.trim() ? { search: searchQuery.trim() } : {}),
+      }
+
+      const res = await fetchAuditLogs(params)
       setAuditLogs(res.items)
       setTotalLogsCount(res.total)
       setLastRefreshedAt(new Date().toLocaleTimeString())
+    } catch (e) {
+      console.warn('Could not load audit logs', e)
     } finally {
       setIsLoadingLogs(false)
     }
-  }, [filterType, filterSeverity, filterStatus, searchQuery, currentPage])
+  }, [filterType, filterSeverity, filterStatus, searchQuery])
 
-  // Load Analytics
+  // Fetch analytics
   const loadAnalyticsData = useCallback(async () => {
     try {
-      const [fb, fac, insp, gov] = await Promise.allSettled([
-        fetchFeedbackAnalytics(ADMIN_SECRET_KEY),
-        fetchFacilityAnalytics(ADMIN_SECRET_KEY),
-        fetchInspectionAnalytics(ADMIN_SECRET_KEY),
-        fetchGovernmentAnalytics(ADMIN_SECRET_KEY),
+      const [fb] = await Promise.allSettled([
+        fetchFeedbackAnalytics(),
+        fetchFacilityAnalytics(),
+        fetchInspectionAnalytics(),
+        fetchGovernmentAnalytics(),
       ])
       if (fb.status === 'fulfilled') setFeedbackData(fb.value)
-      if (fac.status === 'fulfilled') setFacilityData(fac.value)
-      if (insp.status === 'fulfilled') setInspectionData(insp.value)
-      if (gov.status === 'fulfilled') setGovResponseData(gov.value)
     } catch (e) {
       console.warn('Could not load detailed analytics', e)
     }
@@ -150,7 +141,7 @@ export default function AdminDashboard() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-md mx-auto my-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm text-center">
-        <div className="w-14 h-14 mx-auto rounded-full bg-slate-900 text-amber-400 flex items-center justify-center mb-4">
+        <div className="w-14 h-14 mx-auto rounded-full bg-[#123C3A] text-amber-400 flex items-center justify-center mb-4">
           <span className="material-symbols-outlined text-3xl">admin_panel_settings</span>
         </div>
         <h2 className="text-xl font-bold text-slate-900">Namma Suvidha Admin Gate</h2>
@@ -169,7 +160,7 @@ export default function AdminDashboard() {
               value={authInputKey}
               onChange={(e) => setAuthInputKey(e.target.value)}
               placeholder="Enter administrator passkey..."
-              className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-slate-800"
+              className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#123C3A]"
             />
             <p className="text-[11px] text-slate-400 mt-1">
               Dev Key: <code className="text-slate-700">namma-admin-secret-key-2026</code>
@@ -183,13 +174,15 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          <button
+          <LiquidGlassButton
             type="submit"
-            className="w-full py-2.5 px-4 rounded-xl font-bold text-sm text-white bg-slate-900 hover:bg-slate-800 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+            variant="primary"
+            fullWidth
+            size="md"
+            icon={<span className="material-symbols-outlined text-lg">lock_open</span>}
           >
-            <span className="material-symbols-outlined text-lg">lock_open</span>
             Unlock Admin Dashboard
-          </button>
+          </LiquidGlassButton>
         </form>
       </div>
     )
@@ -198,67 +191,65 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       {/* ================= EXECUTIVE HEADER ================= */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-slate-100 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-[#123C3A] border border-[#1d5452] rounded-2xl p-6 text-slate-100 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[#D18B55]/20 text-[#D18B55] border border-[#D18B55]/30">
               <span className="material-symbols-outlined text-sm">shield</span>
               Platform Administration
             </span>
-            <span className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+            <span className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-[#1a4f4d] text-slate-200 border border-white/10">
               Read-Only Governance
             </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
             Admin Audit & Analytics Dashboard
           </h1>
-          <p className="text-xs text-slate-400 max-w-xl mt-1 leading-relaxed">
+          <p className="text-xs text-slate-300 max-w-xl mt-1 leading-relaxed">
             Real-time telemetry, immutable audit trails, and multi-dimensional sanitation performance analytics across Bengaluru.
           </p>
         </div>
 
         {/* Real-time Status Badge & Polling Controls */}
         <div className="flex items-center gap-3">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2 text-xs flex items-center gap-3 shadow-xs">
+          <div className="bg-[#0f3230] border border-[#1a4f4d] rounded-xl px-3.5 py-2 text-xs flex items-center gap-3 shadow-xs">
             <div className="flex items-center gap-1.5">
               <span
-                className={`h-2.5 w-2.5 rounded-full ${
-                  autoRefresh ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'
-                }`}
+                className={`h-2.5 w-2.5 rounded-full ${autoRefresh ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'
+                  }`}
               ></span>
               <span className="font-medium text-slate-200">
                 {autoRefresh ? 'Live Polling (6s)' : 'Polling Paused'}
               </span>
             </div>
             <span className="text-slate-500">·</span>
-            <span className="text-slate-400 font-mono text-[11px]">{lastRefreshedAt}</span>
+            <span className="text-slate-300 font-mono text-[11px]">{lastRefreshedAt}</span>
           </div>
 
-          <button
+          <LiquidGlassButton
+            variant="secondary"
+            size="sm"
             onClick={() => {
               loadSummaryData()
               loadAuditLogsData()
               loadAnalyticsData()
             }}
             disabled={isLoadingLogs || isLoadingSummary}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+            loading={isLoadingLogs || isLoadingSummary}
+            icon={<span className="material-symbols-outlined text-base">refresh</span>}
             title="Refresh Now"
           >
-            <span
-              className={`material-symbols-outlined text-base ${
-                isLoadingLogs || isLoadingSummary ? 'animate-spin' : ''
-              }`}
-            >
-              refresh
-            </span>
-          </button>
+            Refresh
+          </LiquidGlassButton>
 
-          <button
+          <LiquidGlassButton
+            variant="danger"
+            size="sm"
             onClick={handleAdminLogout}
-            className="px-3 py-2 rounded-xl text-xs font-semibold text-red-400 bg-red-950/30 hover:bg-red-950/60 border border-red-800/40 transition-colors"
+            icon={<span className="material-symbols-outlined text-sm">lock</span>}
           >
             Lock
-          </button>
+          </LiquidGlassButton>
         </div>
       </div>
 
@@ -268,7 +259,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Toilets</span>
-            <span className="material-symbols-outlined text-xl text-blue-600">wc</span>
+            <span className="material-symbols-outlined text-xl text-teal-700">wc</span>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.total_toilets ?? 479}</div>
           <p className="text-[10px] text-slate-500 mt-1">BBMP Open Data</p>
@@ -298,7 +289,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Reported</span>
-            <span className="material-symbols-outlined text-xl text-amber-600">report_problem</span>
+            <span className="material-symbols-outlined text-xl text-[#D18B55]">report_problem</span>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.total_reported_issues ?? 24}</div>
           <p className="text-[10px] text-slate-500 mt-1">Triage Incidents</p>
@@ -321,7 +312,7 @@ export default function AdminDashboard() {
             <span className="material-symbols-outlined text-xl text-indigo-600">outgoing_mail</span>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.notifications_sent ?? 23}</div>
-          <p className="text-[10px] text-slate-500 mt-1">Official BBMP Alerts</p>
+          <p className="text-[10px] text-indigo-600 font-semibold mt-1">Automated Alerts</p>
         </div>
 
         {/* 7. Resolved Issues */}
@@ -337,41 +328,32 @@ export default function AdminDashboard() {
 
       {/* ================= NAVIGATION TABS ================= */}
       <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
-        <button
+        <LiquidGlassButton
+          variant={activeTab === 'overview' ? 'primary' : 'ghost'}
+          size="sm"
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-            activeTab === 'overview'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
+          icon={<span className="material-symbols-outlined text-sm">dashboard</span>}
         >
-          <span className="material-symbols-outlined text-sm">dashboard</span>
           Overview & KPIs
-        </button>
+        </LiquidGlassButton>
 
-        <button
+        <LiquidGlassButton
+          variant={activeTab === 'audit_logs' ? 'primary' : 'ghost'}
+          size="sm"
           onClick={() => setActiveTab('audit_logs')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-            activeTab === 'audit_logs'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
+          icon={<span className="material-symbols-outlined text-sm">history</span>}
         >
-          <span className="material-symbols-outlined text-sm">history</span>
           Platform Audit Logs ({totalLogsCount || displayedLogs.length})
-        </button>
+        </LiquidGlassButton>
 
-        <button
+        <LiquidGlassButton
+          variant={activeTab === 'analytics' ? 'primary' : 'ghost'}
+          size="sm"
           onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-            activeTab === 'analytics'
-              ? 'bg-slate-900 text-white shadow-xs'
-              : 'text-slate-600 hover:bg-slate-100'
-          }`}
+          icon={<span className="material-symbols-outlined text-sm">bar_chart</span>}
         >
-          <span className="material-symbols-outlined text-sm">bar_chart</span>
           Deep Visual Analytics
-        </button>
+        </LiquidGlassButton>
       </div>
 
       {/* ================= TAB 1: OVERVIEW & HIGHLIGHTS ================= */}
@@ -398,54 +380,52 @@ export default function AdminDashboard() {
                     <div className="h-full bg-emerald-500 rounded-full" style={{ width: '53%' }}></div>
                   </div>
                 </div>
-
                 <div>
                   <div className="flex justify-between text-xs font-semibold mb-1">
-                    <span className="text-amber-700">Neutral (Minor Maintenance)</span>
-                    <span>10% (18)</span>
+                    <span className="text-slate-600">Neutral (Acceptable)</span>
+                    <span>23% (41)</span>
                   </div>
                   <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-amber-400 rounded-full" style={{ width: '10%' }}></div>
+                    <div className="h-full bg-slate-400 rounded-full" style={{ width: '23%' }}></div>
                   </div>
                 </div>
-
                 <div>
                   <div className="flex justify-between text-xs font-semibold mb-1">
-                    <span className="text-red-700">Negative (Sanitation Alert)</span>
-                    <span>37% (64)</span>
+                    <span className="text-red-700">Negative (Defects Reported)</span>
+                    <span>24% (41)</span>
                   </div>
                   <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-red-500 rounded-full" style={{ width: '37%' }}></div>
+                    <div className="h-full bg-red-500 rounded-full" style={{ width: '24%' }}></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Facility Condition Tiers */}
+            {/* Facility Status Distribution */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-blue-600 text-base">domain</span>
                   Facility Health Tiers
                 </h3>
-                <span className="text-[11px] font-semibold text-slate-500">479 Toilets</span>
+                <span className="text-[11px] font-semibold text-slate-500">479 Registered</span>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50 border border-emerald-100 text-xs">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-emerald-600"></span>
-                    <span className="font-bold text-emerald-950">Recommended (Clean)</span>
+                    <span className="font-bold text-emerald-950">Recommended / Verified</span>
                   </div>
-                  <span className="font-mono font-bold text-emerald-800">296 (62%)</span>
+                  <span className="font-mono font-bold text-emerald-800">297 (62%)</span>
                 </div>
 
                 <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 border border-amber-100 text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-amber-600"></span>
+                    <span className="h-2 w-2 rounded-full bg-amber-500"></span>
                     <span className="font-bold text-amber-950">Needs Attention</span>
                   </div>
-                  <span className="font-mono font-bold text-amber-800">134 (28%)</span>
+                  <span className="font-mono font-bold text-amber-800">133 (28%)</span>
                 </div>
 
                 <div className="flex items-center justify-between p-2.5 rounded-xl bg-red-50 border border-red-100 text-xs">
@@ -502,20 +482,20 @@ export default function AdminDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-slate-200 text-slate-500 font-semibold pb-2">
-                    <th className="py-2.5">Facility Name</th>
-                    <th>Ward / Zone</th>
-                    <th>Complaints</th>
-                    <th>Hygiene Score</th>
-                    <th>Current Status</th>
+                  <tr className="border-b border-slate-200 text-slate-500 font-semibold">
+                    <th className="pb-2.5">Facility Name</th>
+                    <th className="pb-2.5">Location / Ward</th>
+                    <th className="pb-2.5">Complaints</th>
+                    <th className="pb-2.5">Health Score</th>
+                    <th className="pb-2.5">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   <tr>
-                    <td className="py-3 font-semibold text-slate-900">Majestic Bus Stand Subway Complex</td>
+                    <td className="py-3 font-semibold text-slate-900">Majestic Metro Interchange Restroom</td>
                     <td className="text-slate-600">Ward 94 - Gandhinagar</td>
-                    <td className="text-red-700 font-bold">27 Reports</td>
-                    <td className="font-mono font-bold text-red-700">38.5 / 100</td>
+                    <td className="text-red-700 font-bold">34 Reports</td>
+                    <td className="font-mono font-bold text-red-700">31.4 / 100</td>
                     <td>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800">
                         Escalated
@@ -601,15 +581,16 @@ export default function AdminDashboard() {
                 onChange={(e) => setFilterType(e.target.value)}
                 className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
               >
-                <option value="all">All Event Types</option>
-                <option value="feedback">Citizen Feedback</option>
-                <option value="inspection">Volunteer Inspection</option>
-                <option value="ai">AI Classification</option>
-                <option value="score">Score Updated</option>
-                <option value="issue">Maintenance Issues / Tickets</option>
-                <option value="notification">Government Notification</option>
-                <option value="escalation">Escalation Triggered</option>
-                <option value="inspector">Inspector Verification</option>
+                <option value="all">All Events</option>
+                <option value="citizen_feedback_submitted">Citizen Feedback</option>
+                <option value="volunteer_inspection_completed">Volunteer Audit</option>
+                <option value="ai_classification_completed">AI Classification</option>
+                <option value="facility_score_updated">Score Updated</option>
+                <option value="facility_status_changed">Status Changed</option>
+                <option value="maintenance_ticket_created">Ticket Created</option>
+                <option value="government_notification_sent">Gov Notification</option>
+                <option value="escalation_triggered">Escalation Triggered</option>
+                <option value="maintenance_resolved">Issue Resolved</option>
               </select>
             </div>
 
@@ -702,15 +683,14 @@ export default function AdminDashboard() {
                       </td>
                       <td className="py-3 px-3.5">
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                            log.severity === 'critical'
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${log.severity === 'critical'
                               ? 'bg-red-100 text-red-800 border border-red-200'
                               : log.severity === 'high'
-                              ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                              : log.severity === 'medium'
-                              ? 'bg-blue-100 text-blue-800 border border-blue-200'
-                              : 'bg-slate-100 text-slate-700'
-                          }`}
+                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                : log.severity === 'medium'
+                                  ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                                  : 'bg-slate-100 text-slate-700'
+                            }`}
                         >
                           {log.severity}
                         </span>
@@ -720,15 +700,14 @@ export default function AdminDashboard() {
                       </td>
                       <td className="py-3 px-3.5">
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            log.status === 'success' || log.status === 'resolved'
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${log.status === 'success' || log.status === 'resolved'
                               ? 'bg-emerald-100 text-emerald-800'
                               : log.status === 'escalated'
-                              ? 'bg-purple-100 text-purple-800 font-bold'
-                              : log.status === 'pending'
-                              ? 'bg-amber-100 text-amber-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
+                                ? 'bg-purple-100 text-purple-800 font-bold'
+                                : log.status === 'pending'
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : 'bg-red-100 text-red-800'
+                            }`}
                         >
                           {log.status.toUpperCase()}
                         </span>
@@ -780,7 +759,7 @@ export default function AdminDashboard() {
                       </div>
                       <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-blue-600 rounded-full"
+                          className="h-full bg-[#123C3A] rounded-full"
                           style={{ width: `${item.percentage}%` }}
                         ></div>
                       </div>
@@ -810,7 +789,7 @@ export default function AdminDashboard() {
                         <span className="text-[10px] font-bold text-slate-700 font-mono">{pt.count}</span>
                         <div className="w-full bg-slate-200 rounded-t h-24 flex items-end">
                           <div
-                            className="w-full bg-teal-600 hover:bg-teal-700 rounded-t transition-all"
+                            className="w-full bg-[#123C3A] hover:bg-[#1a4f4d] rounded-t transition-all"
                             style={{ height: `${heightPercent}%` }}
                           ></div>
                         </div>
@@ -835,8 +814,8 @@ export default function AdminDashboard() {
               <div className="space-y-3">
                 {[
                   { label: '90-100 (Cleanest Facilities)', count: 120, pct: '25%', color: 'bg-emerald-500' },
-                  { label: '70-89 (Good Baseline Standard)', count: 177, pct: '37%', color: 'bg-blue-500' },
-                  { label: '40-69 (Attention Required)', count: 134, pct: '28%', color: 'bg-amber-500' },
+                  { label: '70-89 (Good Baseline Standard)', count: 177, pct: '37%', color: 'bg-[#123C3A]' },
+                  { label: '40-69 (Attention Required)', count: 134, pct: '28%', color: 'bg-[#D18B55]' },
                   { label: '0-39 (Severe Hygiene Failure)', count: 38, pct: '8%', color: 'bg-red-500' },
                   { label: 'Unscored (Awaiting Audit)', count: 10, pct: '2%', color: 'bg-slate-400' },
                 ].map((tier) => (
@@ -876,7 +855,7 @@ export default function AdminDashboard() {
                       <span className="font-mono text-slate-600">{def.flags} audits flagged ({def.pct})</span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-amber-500 rounded-full" style={{ width: def.pct }}></div>
+                      <div className="h-full bg-[#D18B55] rounded-full" style={{ width: def.pct }}></div>
                     </div>
                   </div>
                 ))}
@@ -888,4 +867,3 @@ export default function AdminDashboard() {
     </div>
   )
 }
-
