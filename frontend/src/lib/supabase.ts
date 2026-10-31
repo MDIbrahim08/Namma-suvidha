@@ -1,9 +1,9 @@
-/**
- * Supabase client - PLACEHOLDER.
- *
- * OWNER: Shabaz
- *
- * TODO (Phase 1): create the client with createClient(env.supabaseUrl, env.supabaseAnonKey)
- * from '@supabase/supabase-js' and implement auth flows. No auth logic exists in Phase 0.
- */
-export const supabase = null
+import { createClient } from '@supabase/supabase-js'
+import { env } from '../config/env'
+
+const supabaseUrl = env.supabaseUrl || 'https://tjtwdmhyvujarplllbee.supabase.co'
+const supabaseAnonKey =
+  env.supabaseAnonKey ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqdHdkbWh5dnVqYXJwbGxsYmVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNDc1OTMsImV4cCI6MjEwODkyMzU5M30.wiLVNHenFqg1-Gie0rP7AT0WYGqOlF2V-oTxRzlluwo'
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
