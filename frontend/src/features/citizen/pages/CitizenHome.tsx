@@ -374,38 +374,22 @@ export default function CitizenHome() {
 
     return (
       <section className="bg-surface font-body-md text-body-md text-on-surface flex flex-col gap-space-md rounded-xl pb-8 antialiased">
-        {/* Citizen Telemetry Header Bar (adapted from Stitch UI header, keeping h1 'Citizen' for route accessibility) */}
-        <div className="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/90 backdrop-blur-xl rounded-full px-space-md py-space-sm shadow-[0_2px_8px_-2px_rgba(12,74,96,0.08),0_1px_3px_rgba(0,0,0,0.04)] border border-outline-variant/30">
-          <div className="flex items-center gap-space-sm min-w-0">
-            <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-outlined text-primary-fixed text-[20px]">
-                explore
-              </span>
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-space-xs">
-                <span
-                  className={`w-2 h-2 rounded-full ${userLocation ? 'bg-on-tertiary-container animate-pulse' : 'bg-outline'
-                    }`}
-                />
-                <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider truncate">
-                  Civic Telemetry &amp; OpenStreetMap Discovery
-                </span>
-              </div>
-              <h1 className="font-headline-sm text-headline-sm text-on-surface truncate">Citizen</h1>
-            </div>
-          </div>
+        {/* Minimal Unified Glass Card */}
+        <div className="bg-white/85 backdrop-blur-xl border border-white/90 rounded-2xl p-3 sm:p-4 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex flex-col gap-3">
+          {/* Top: AI Assistant & Voice Input */}
+          <CivicAiChatBar
+            placeholder="Ask Namma AI: 'Find accessible toilets near Indiranagar' or use voice..."
+            onSubmit={handleAiQuery}
+          />
 
-          {/* View Switcher & Primary GPS Trigger */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex p-1 bg-surface-container rounded-full">
+          {/* Integrated Minimal Control Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+            {/* View Switcher */}
+            <div className="inline-flex p-1 bg-slate-100/90 rounded-full text-xs font-semibold text-slate-700">
               <button
                 type="button"
                 onClick={() => setActiveView('map')}
-                className={`px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1 transition-all ${activeView === 'map'
-                  ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-primary'
-                  }`}
+                className={`px-3 py-1 rounded-full flex items-center gap-1 transition-all ${activeView === 'map' ? 'bg-[#123C3A] text-white shadow-xs' : 'hover:text-slate-900'}`}
               >
                 <span className="material-symbols-outlined text-[15px]">map</span>
                 <span>Map</span>
@@ -413,119 +397,49 @@ export default function CitizenHome() {
               <button
                 type="button"
                 onClick={() => setActiveView('list')}
-                className={`px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1 transition-all ${activeView === 'list'
-                  ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-primary'
-                  }`}
+                className={`px-3 py-1 rounded-full flex items-center gap-1 transition-all ${activeView === 'list' ? 'bg-[#123C3A] text-white shadow-xs' : 'hover:text-slate-900'}`}
               >
                 <span className="material-symbols-outlined text-[15px]">format_list_bulleted</span>
-                <span>Results ({filteredToilets.length})</span>
+                <span>List ({filteredToilets.length})</span>
               </button>
               <button
                 type="button"
                 onClick={() => setActiveView('filters')}
-                className={`px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1 transition-all ${activeView === 'filters'
-                  ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-primary'
-                  }`}
+                className={`px-3 py-1 rounded-full flex items-center gap-1 transition-all ${activeView === 'filters' ? 'bg-[#123C3A] text-white shadow-xs' : 'hover:text-slate-900'}`}
               >
                 <span className="material-symbols-outlined text-[15px]">tune</span>
-                <span>Filters</span>
-                {activeFilterCount > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-secondary text-on-secondary text-[10px] flex items-center justify-center">
-                    {activeFilterCount}
-                  </span>
-                )}
+                <span>Filters {activeFilterCount > 0 ? `(${activeFilterCount})` : ''}</span>
               </button>
             </div>
 
+            {/* Quick Radius Pills */}
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+              {RADIUS_OPTIONS.map((opt) => {
+                const isActive = radiusMeters === opt.meters
+                return (
+                  <button
+                    key={opt.meters}
+                    type="button"
+                    onClick={() => void handleRadiusChange(opt.meters)}
+                    disabled={isBusy}
+                    className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${isActive ? 'bg-emerald-700 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                  >
+                    {opt.label}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Live GPS Action Button */}
             <button
               type="button"
               onClick={() => void handleDetectAndDiscover()}
               disabled={isBusy}
-              aria-label="Detect My Location & Find Nearby Toilets"
-              className="px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-secondary disabled:opacity-60 font-label-md text-label-md flex items-center gap-1.5 shadow-md active:scale-95 transition-all"
+              className="px-4 py-1.5 rounded-full bg-[#123C3A] hover:bg-[#003244] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50 ml-auto"
             >
-              <span className="material-symbols-outlined text-[18px]">my_location</span>
-              <span>
-                {isLocating
-                  ? 'Detecting GPS…'
-                  : isFetchingToilets
-                    ? 'Querying OpenStreetMap…'
-                    : userLocation
-                      ? 'Refresh GPS & Search'
-                      : 'Use My Current Location'}
-              </span>
+              <span className="material-symbols-outlined text-[16px]">my_location</span>
+              <span>{isLocating ? 'Detecting…' : userLocation ? 'Refresh GPS' : 'Use My Current Location'}</span>
             </button>
-          </div>
-        </div>
-
-        {/* AI Chat Bar & Natural Language Civic Assistant */}
-        <CivicAiChatBar
-          placeholder="Ask Namma AI: 'Find accessible toilets near Indiranagar' or 'Western toilets near me'…"
-          onSubmit={handleAiQuery}
-        />
-
-        {/* Radius Range & Telemetry Coordinates Bar (from search_facility_results) */}
-        <div className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/20 flex flex-col gap-space-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant flex items-center gap-1">
-              <span className="material-symbols-outlined text-[15px] text-secondary">explore</span>
-              Radius Range (Max 10 km • Source: OpenStreetMap Overpass)
-            </span>
-            <span
-              data-testid="telemetry-coordinates"
-              className="font-telemetry-code text-telemetry-code text-secondary font-semibold"
-            >
-              {userLocation
-                ? `GPS: ${formatCoordinates(userLocation.latitude, userLocation.longitude)}${userLocation.accuracyMeters ? ` (±${userLocation.accuracyMeters}m)` : ''
-                }`
-                : 'GPS: Awaiting location permission'}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5">
-            {RADIUS_OPTIONS.map((opt) => {
-              const isActive = radiusMeters === opt.meters
-              return (
-                <button
-                  key={opt.meters}
-                  type="button"
-                  onClick={() => void handleRadiusChange(opt.meters)}
-                  disabled={isBusy}
-                  className={`flex-shrink-0 px-space-md py-space-xs rounded-full font-label-md text-label-md flex items-center gap-1.5 transition-all ${isActive
-                    ? 'bg-primary text-on-primary shadow-sm'
-                    : 'bg-surface-container-low text-on-surface hover:bg-surface-container'
-                    }`}
-                >
-                  <span className="material-symbols-outlined text-[16px]">{opt.icon}</span>
-                  <span>{opt.label}</span>
-                  <span className="opacity-75 font-body-sm text-body-sm">{opt.sub}</span>
-                </button>
-              )
-            })}
-        </div>
-
-          {/* Search / Filter Input Bar */}
-          <div className="flex items-center bg-surface-container-low rounded-full px-space-md py-1.5 gap-space-sm">
-            <span className="material-symbols-outlined text-secondary text-[20px]">search</span>
-            <input
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Filter discovered toilets by name, street, city, or OSM tag (e.g. wheelchair, fee)..."
-              className="flex-1 bg-transparent font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant outline-none"
-            />
-            {searchText && (
-              <button
-                type="button"
-                aria-label="Clear Search"
-                onClick={() => setSearchText('')}
-                className="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface"
-              >
-                <span className="material-symbols-outlined text-[16px]">close</span>
-              </button>
-            )}
           </div>
         </div>
 
@@ -533,80 +447,16 @@ export default function CitizenHome() {
         {locationError && (
           <div
             role="alert"
-            data-testid="geolocation-error-banner"
-            className="bg-error-container text-on-error-container rounded-xl p-space-md flex items-start justify-between gap-space-sm shadow-sm"
+            className="bg-red-50 text-red-700 rounded-xl p-3 flex items-center justify-between text-xs border border-red-200"
           >
-            <div className="flex items-start gap-space-sm">
-              <span className="material-symbols-outlined text-error text-[22px] mt-0.5">
-                location_off
-              </span>
-              <div>
-                <p className="font-label-lg text-label-lg font-bold">
-                  Location Detection Failed ({locationError.code})
-                </p>
-                <p className="font-body-sm text-body-sm mt-0.5">{locationError.message}</p>
-              </div>
-            </div>
+            <span>Location error: {locationError.message}</span>
             <button
               type="button"
               onClick={() => void handleDetectAndDiscover()}
-              className="px-3 py-1.5 rounded-full bg-error text-on-error font-label-sm text-label-sm flex-shrink-0"
+              className="px-2.5 py-1 bg-red-600 text-white rounded-lg font-bold ml-2"
             >
-              Retry GPS
+              Retry
             </button>
-          </div>
-        )}
-
-        {/* Backend / Overpass API Error Banner */}
-        {apiError && (
-          <div
-            role="alert"
-            data-testid="api-error-banner"
-            className="bg-error-container text-on-error-container rounded-xl p-space-md flex items-start justify-between gap-space-sm shadow-sm"
-          >
-            <div className="flex items-start gap-space-sm">
-              <span className="material-symbols-outlined text-error text-[22px] mt-0.5">
-                cloud_off
-              </span>
-              <div>
-                <p className="font-label-lg text-label-lg font-bold">OpenStreetMap Discovery Error</p>
-                <p className="font-body-sm text-body-sm mt-0.5">{apiError}</p>
-              </div>
-            </div>
-            {userLocation && (
-              <button
-                type="button"
-                onClick={() => void fetchForCoordinates(userLocation, radiusMeters)}
-                className="px-3 py-1.5 rounded-full bg-error text-on-error font-label-sm text-label-sm flex-shrink-0"
-              >
-                Retry Query
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Loading Indicator */}
-        {isBusy && (
-          <div
-            role="status"
-            data-testid="discovery-loading-state"
-            className="bg-surface-container-high/90 rounded-xl px-space-md py-space-md flex items-center gap-space-sm shadow-sm"
-          >
-            <span className="material-symbols-outlined text-secondary animate-spin text-[22px]">
-              radar
-            </span>
-            <div>
-              <p className="font-label-lg text-label-lg text-primary">
-                {isLocating
-                  ? 'Acquiring real-time GPS coordinates from your device…'
-                  : `Querying OpenStreetMap Overpass for amenity=toilets within ${(
-                    radiusMeters / 1000
-                  ).toFixed(1)} km…`}
-              </p>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                No hardcoded or sample coordinates are used.
-              </p>
-            </div>
           </div>
         )}
 
