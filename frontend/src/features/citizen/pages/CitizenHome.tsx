@@ -4,7 +4,7 @@ import { getFallbackNearbyToilets } from '../../../lib/api/bbmpFallback'
 import type { NearbyToilet, UserLocation } from '../../../lib/api/discovery.types'
 
 import CitizenDiscoveryMap from '../components/CitizenDiscoveryMap'
-import MorphOrb from '../../../components/ui/ai-thiking-orb-and-input'
+import CivicAiChatBar from '../../../components/ui/civic-ai-chat-bar'
 import { askCivicSuperLLM } from '../../../lib/api/llm'
 import { detectDeviceLocation, DeviceLocationError } from '../geolocation'
 import {
@@ -459,9 +459,9 @@ export default function CitizenHome() {
           </div>
         </div>
 
-        {/* AI Thinking Orb & Natural Language Assistant (MorphOrb) */}
-        <MorphOrb
-          placeholder="Ask Namma AI: 'Find accessible toilets near me' or 'Toilets near Majestic'…"
+        {/* AI Chat Bar & Natural Language Civic Assistant */}
+        <CivicAiChatBar
+          placeholder="Ask Namma AI: 'Find accessible toilets near Indiranagar' or 'Western toilets near me'…"
           onSubmit={handleAiQuery}
         />
 

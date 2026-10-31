@@ -13,12 +13,13 @@ import {
 import LiquidGlassButton from '../../../components/ui/liquid-glass-button'
 
 const ADMIN_SECRET_KEY = '06072005'
-const AUTH_STORAGE_KEY = 'namma_suvidha_admin_authenticated'
+const AUTH_STORAGE_KEY = 'namma_suvidha_admin_authenticated_v2'
 
 export default function AdminDashboard() {
-  // Authentication State (Locked by default: requires password 06072005)
+  // Authentication State (Locked by default: strictly requires password 06072005)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const stored = localStorage.getItem(AUTH_STORAGE_KEY)
+    if (typeof window === 'undefined') return false
+    const stored = sessionStorage.getItem(AUTH_STORAGE_KEY)
     return stored === 'true'
   })
   const [authInputKey, setAuthInputKey] = useState('')
@@ -50,7 +51,7 @@ export default function AdminDashboard() {
     e.preventDefault()
     if (authInputKey.trim() === ADMIN_SECRET_KEY) {
       setIsAuthenticated(true)
-      localStorage.setItem(AUTH_STORAGE_KEY, 'true')
+      sessionStorage.setItem(AUTH_STORAGE_KEY, 'true')
       setAuthError(null)
     } else {
       setAuthError('Invalid administrator credentials. Access restricted.')
@@ -59,7 +60,7 @@ export default function AdminDashboard() {
 
   const handleAdminLogout = () => {
     setIsAuthenticated(false)
-    localStorage.removeItem(AUTH_STORAGE_KEY)
+    sessionStorage.removeItem(AUTH_STORAGE_KEY)
   }
 
   // Fetch summary
