@@ -22,7 +22,7 @@ interface KnownLandmark {
   coords: { latitude: number; longitude: number }
 }
 
-const KNOWN_LANDMARKS: KnownLandmark[] = [
+export const _KNOWN_LANDMARKS: KnownLandmark[] = [
   {
     name: 'Majestic / Kempegowda Bus Station',
     keywords: ['majestic', 'kempegowda', 'city railway station', 'sangolli rayanna'],
@@ -75,7 +75,7 @@ const KNOWN_LANDMARKS: KnownLandmark[] = [
   },
 ]
 
-const RADIUS_OPTIONS = [
+export const _RADIUS_OPTIONS = [
   { meters: 500, label: '500m', sub: '(~6 min)', icon: 'directions_walk' },
   { meters: 1000, label: '1 km', sub: '(~12 min)', icon: 'directions_walk' },
   { meters: 2000, label: '2 km', sub: '(Quick Auto)', icon: 'electric_rickshaw' },
@@ -86,7 +86,7 @@ const RADIUS_OPTIONS = [
 export default function CitizenHome() {
   const [activeView, setActiveView] = useState<ActiveView>('map')
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
-  const [radiusMeters, setRadiusMeters] = useState<number>(10000)
+  const [radiusMeters] = useState<number>(10000)
   const [toilets, setToilets] = useState<NearbyToilet[]>([])
   const [selectedToilet, setSelectedToilet] = useState<NearbyToilet | null>(null)
   const [searchText] = useState<string>('')

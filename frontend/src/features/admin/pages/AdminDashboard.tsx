@@ -11,6 +11,8 @@ import {
   type FeedbackAnalytics,
 } from '../../../lib/api/admin'
 import LiquidGlassButton from '../../../components/ui/liquid-glass-button'
+import { Card } from '../../../components/ui/card'
+import { cn } from '../../../lib/utils'
 
 const ADMIN_SECRET_KEY = '06072005'
 const AUTH_STORAGE_KEY = 'namma_suvidha_admin_authenticated_v2'
@@ -256,70 +258,84 @@ export default function AdminDashboard() {
       {/* ================= SUMMARY STATS CARDS (7 ACTUAL KPIS) ================= */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3.5">
         {/* 1. Public Toilets */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Toilets</span>
-            <span className="material-symbols-outlined text-xl text-teal-700">wc</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-primary/10 text-primary transition-colors", "group-hover:bg-primary group-hover:text-primary-foreground")}>
+              <span className="material-symbols-outlined text-[16px]">wc</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.total_toilets ?? 479}</div>
           <p className="text-[10px] text-slate-500 mt-1">BBMP Open Data</p>
         </div>
 
         {/* 2. Citizen Feedback */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Feedback</span>
-            <span className="material-symbols-outlined text-xl text-teal-600">reviews</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-primary/10 text-primary transition-colors", "group-hover:bg-primary group-hover:text-primary-foreground")}>
+              <span className="material-symbols-outlined text-[16px]">reviews</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.total_feedback ?? 176}</div>
           <p className="text-[10px] text-emerald-600 font-semibold mt-1">Live Submissions</p>
         </div>
 
         {/* 3. Inspections Completed */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Inspections</span>
-            <span className="material-symbols-outlined text-xl text-emerald-600">checklist</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-primary/10 text-primary transition-colors", "group-hover:bg-primary group-hover:text-primary-foreground")}>
+              <span className="material-symbols-outlined text-[16px]">checklist</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.total_inspections ?? 49}</div>
           <p className="text-[10px] text-slate-500 mt-1">Physical Audits</p>
         </div>
 
         {/* 4. Total Reported Issues */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Reported</span>
-            <span className="material-symbols-outlined text-xl text-[#D18B55]">report_problem</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-amber-500/10 text-amber-600 transition-colors", "group-hover:bg-amber-500 group-hover:text-white")}>
+              <span className="material-symbols-outlined text-[16px]">report_problem</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.total_reported_issues ?? 24}</div>
           <p className="text-[10px] text-slate-500 mt-1">Triage Incidents</p>
         </div>
 
         {/* 5. Pending Maintenance Tickets */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Pending</span>
-            <span className="material-symbols-outlined text-xl text-red-600">pending_actions</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-red-500/10 text-red-600 transition-colors", "group-hover:bg-red-500 group-hover:text-white")}>
+              <span className="material-symbols-outlined text-[16px]">pending_actions</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-red-600">{summary?.pending_maintenance_tickets ?? 7}</div>
           <p className="text-[10px] text-red-500 font-semibold mt-1">Active Action Required</p>
         </div>
 
         {/* 6. Government Notifications Sent */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Notified</span>
-            <span className="material-symbols-outlined text-xl text-indigo-600">outgoing_mail</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-indigo-500/10 text-indigo-600 transition-colors", "group-hover:bg-indigo-500 group-hover:text-white")}>
+              <span className="material-symbols-outlined text-[16px]">outgoing_mail</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-slate-900">{summary?.notifications_sent ?? 23}</div>
           <p className="text-[10px] text-indigo-600 font-semibold mt-1">Automated Alerts</p>
         </div>
 
         {/* 7. Resolved Issues */}
-        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+        <div className="group p-4 transition-colors hover:border-primary/40">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Resolved</span>
-            <span className="material-symbols-outlined text-xl text-emerald-600">task_alt</span>
+            <div className={cn("flex size-8 items-center justify-center rounded-md", "bg-emerald-500/10 text-emerald-600 transition-colors", "group-hover:bg-emerald-500 group-hover:text-white")}>
+              <span className="material-symbols-outlined text-[16px]">task_alt</span>
+            </div>
           </div>
           <div className="text-2xl font-bold text-emerald-700">{summary?.resolved_issues ?? 18}</div>
           <p className="text-[10px] text-emerald-600 font-semibold mt-1">Sanitized & Closed</p>
@@ -361,7 +377,7 @@ export default function AdminDashboard() {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Feedback Breakdown Mini-Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div className="group p-5 transition-colors hover:border-primary/40">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-teal-600 text-base">sentiment_satisfied</span>
@@ -402,7 +418,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Facility Status Distribution */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div className="group p-5 transition-colors hover:border-primary/40">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-blue-600 text-base">domain</span>
@@ -439,7 +455,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Government Notification Performance */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div className="group p-5 transition-colors hover:border-primary/40">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-indigo-600 text-base">mark_email_read</span>

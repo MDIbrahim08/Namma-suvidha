@@ -555,3 +555,17 @@ body {
   box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
   transform: translateY(-2px);
 }
+
+
+/* shadcn/ui Card Theme Tokens */
+:root {
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --radius: 0.75rem;
+}
